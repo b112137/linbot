@@ -22,6 +22,9 @@ class TocMachine(GraphMachine):
         send_text_message(reply_token, "Trigger ONON state1")
         self.go_back()
 
+    # def on_exit_user(self):
+    #     print("Leaving user")
+
     def on_exit_state1(self):
         print("Leaving state1")
 
