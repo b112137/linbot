@@ -14,30 +14,54 @@ load_dotenv()
 
 
 machine = TocMachine(
-    states=["user", "state1", "state2", "state3"],
+    states=["user",
+            "wanteat",
+            "breakfast",
+            "lunch",
+            "dinner",
+            "midnight"
+            "place"],
     transitions=[
         {
             "trigger": "advance",
             "source": "user",
-            "dest": "state1",
-            "conditions": "is_going_to_state1",
+            "dest": "wanteat",
+            "conditions": "is_going_to_wanteat",
         },
         {
             "trigger": "advance",
-            "source": "user",
-            "dest": "state2",
-            "conditions": "is_going_to_state2",
+            "source": ["wanteat", "breakfast"],
+            "dest": "breakfast",
+            "conditions": "is_going_to_breakfast",
         },
         {
             "trigger": "advance",
-            "source": "user",
-            "dest": "state3",
-            "conditions": "is_going_to_state3",
+            "source": ["wanteat", "lunch"],
+            "dest": "lunch",
+            "conditions": "is_going_to_lunch",
+        },
+        {
+            "trigger": "advance",
+            "source": ["wanteat", "dinner"],
+            "dest": "dinner",
+            "conditions": "is_going_to_dinner",
+        },
+        {
+            "trigger": "advance",
+            "source": ["wanteat", "midnight"],
+            "dest": "midnight",
+            "conditions": "is_going_to_midnight",
+        },
+        {
+            "trigger": "advance",
+            "source": ["breakfast", "lunch", "dinner", "midnight"],
+            "dest": "place",
+            "conditions": "is_going_to_place",
         },
         {
             "trigger": "go_back", 
-            "source": ["state1", "state2", "state3"], 
-            "dest": "user",
+            "source": ["place"], 
+            "dest": "wanteat",
         },
     ],
     initial="user",

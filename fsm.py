@@ -7,6 +7,10 @@ class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
         self.machine = GraphMachine(model=self, **machine_configs)
 
+    def is_going_to_wanteat(self, event):
+        text = event.message.text
+        return text.lower() == "START"
+
     def is_going_to_state1(self, event):
         text = event.message.text
         return text.lower() == "go to state1"
@@ -18,6 +22,35 @@ class TocMachine(GraphMachine):
     def is_going_to_state3(self, event):
         text = event.message.text
         return text.lower() == "go to state3"
+
+    def on_enter_wanteat(self, event):
+        print("I'm entering wanteat")
+
+        reply_token = event.reply_token
+        btn = [
+            {
+                "type": "postback",
+                "title": "早餐",
+                "playload": "breakfast"
+            },
+            {
+                "type": "postback",
+                "title": "午餐",
+                "playload": "lunch"
+            },
+            {
+                "type": "postback",
+                "title": "晚餐",
+                "playload": "dinner"
+            },
+            {
+                "type": "postback",
+                "title": "宵夜",
+                "playload": "midnight"
+            },
+        ]
+        send_button_message(reply_token, "想吃什麼呢？", btn)
+        self.go_back()
 
     def on_enter_state1(self, event):
         print("I'm entering state1")
