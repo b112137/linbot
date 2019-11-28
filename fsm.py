@@ -83,7 +83,7 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
         self.go_back()
 
-    def on_exit_wanteat(self, event):
+    def on_exit_wanteat(self):
         print("I'm exit wanteat")
 
     def on_enter_state1(self, event):
