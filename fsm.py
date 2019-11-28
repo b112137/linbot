@@ -11,7 +11,7 @@ class TocMachine(GraphMachine):
     def is_going_to_wanteat(self, event):
         text = event.message.text
         print(text)
-        return text.lower() == "START"
+        return text.lower() == "start"
 
     def is_going_to_state1(self, event):
         text = event.message.text
