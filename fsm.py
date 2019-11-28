@@ -18,9 +18,9 @@ class TocMachine(GraphMachine):
         print(text)
         return text.lower() == "start"
 
-    def is_going_to_state1(self, event):
+    def is_going_to_breakfast(self, event):
         text = event.message.text
-        return text.lower() == "go to state1"
+        return text.lower() == "breakfast"
 
     def is_going_to_state2(self, event):
         text = event.message.text
@@ -61,36 +61,39 @@ class TocMachine(GraphMachine):
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
-                text='Please select',
+                title='想吃什麼呢？',
+                text='',
                 actions=[
-                    PostbackTemplateAction(
-                        label='postback',
-                        text='postback text',
-                        data='action=buy&itemid=1'
+                    MessageTemplateAction(
+                        label='早餐',
+                        text='breakfast'
                     ),
                     MessageTemplateAction(
-                        label='message',
-                        text='message text'
+                        label='午餐',
+                        text='lunch'
                     ),
-                    URITemplateAction(
-                        label='uri',
-                        uri='http://example.com/'
+                    MessageTemplateAction(
+                        label='晚餐',
+                        text="dinner"
+                    ),
+                    MessageTemplateAction(
+                        label='宵夜',
+                        text='midnight'
                     )
                 ]
             )
         )
         line_bot_api.reply_message(event.reply_token, message)
-        self.go_back()
+        #self.go_back()
 
     def on_exit_wanteat(self):
         print("I'm exit wanteat")
 
-    def on_enter_state1(self, event):
-        print("I'm entering state1")
+    def on_enter_breakfast(self, event):
+        print("I'm entering breakfast")
 
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger ONON state1")
+        send_text_message(reply_token, "吃吃早餐")
         self.go_back()
 
     def on_exit_state1(self):
