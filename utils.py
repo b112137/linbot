@@ -6,6 +6,8 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
+GRAPH_URL = "https://graph.facebook.com/v2.6"
+ACCESS_TOKEN = os.environ.get("ACCESS_TOKEN")
 
 
 def send_text_message(reply_token, text):
@@ -34,8 +36,9 @@ def send_button_message(id, text, btn):
     if response.status_code != 200:
         print("Unable to send message: " + response.text)
     return response
-
     
+
+
 """
 def send_image_url(id, img_url):
     pass
