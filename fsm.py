@@ -33,55 +33,54 @@ class TocMachine(GraphMachine):
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
 
-        reply_token = event.reply_token
-        btn = [
-            {
-                "type": "postback",
-                "title": "早餐",
-                "playload": "breakfast"
-            },
-            {
-                "type": "postback",
-                "title": "午餐",
-                "playload": "lunch"
-            },
-            {
-                "type": "postback",
-                "title": "晚餐",
-                "playload": "dinner"
-            },
-            {
-                "type": "postback",
-                "title": "宵夜",
-                "playload": "midnight"
-            },
-        ]
-        send_button_message(reply_token, "想吃什麼呢？", btn)
-        # message = TemplateSendMessage(
-        #     alt_text='Buttons template',
-        #     template=ButtonsTemplate(
-        #         thumbnail_image_url='https://example.com/image.jpg',
-        #         title='Menu',
-        #         text='Please select',
-        #         actions=[
-        #             PostbackTemplateAction(
-        #                 label='postback',
-        #                 text='postback text',
-        #                 data='action=buy&itemid=1'
-        #             ),
-        #             MessageTemplateAction(
-        #                 label='message',
-        #                 text='message text'
-        #             ),
-        #             URITemplateAction(
-        #                 label='uri',
-        #                 uri='http://example.com/'
-        #             )
-        #         ]
-        #     )
-        # )
-        # line_bot_api.reply_message(event.reply_token, message)
-
+        # reply_token = event.reply_token
+        # btn = [
+        #     {
+        #         "type": "postback",
+        #         "title": "早餐",
+        #         "playload": "breakfast"
+        #     },
+        #     {
+        #         "type": "postback",
+        #         "title": "午餐",
+        #         "playload": "lunch"
+        #     },
+        #     {
+        #         "type": "postback",
+        #         "title": "晚餐",
+        #         "playload": "dinner"
+        #     },
+        #     {
+        #         "type": "postback",
+        #         "title": "宵夜",
+        #         "playload": "midnight"
+        #     },
+        # ]
+        # send_button_message(reply_token, "想吃什麼呢？", btn)
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='Please select',
+                actions=[
+                    PostbackTemplateAction(
+                        label='postback',
+                        text='postback text',
+                        data='action=buy&itemid=1'
+                    ),
+                    MessageTemplateAction(
+                        label='message',
+                        text='message text'
+                    ),
+                    URITemplateAction(
+                        label='uri',
+                        uri='http://example.com/'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
         self.go_back()
 
     def on_exit_wanteat(self, event):
