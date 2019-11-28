@@ -97,9 +97,6 @@ class TocMachine(GraphMachine):
         send_text_message(reply_token, "Trigger ON breakfast")
         self.go_back()
 
-    def on_exit_breakfast(self):
-        print("Leaving breakfast")
-
     def on_enter_state2(self, event):
         print("I'm entering state2")
 
