@@ -64,19 +64,14 @@ class TocMachine(GraphMachine):
                 title='Menu',
                 text='Please select',
                 actions=[
-                    PostbackTemplateAction(
-                        label='postback',
-                        text='postback text',
-                        data='action=buy&itemid=1'
-                    ),
                     MessageTemplateAction(
-                        label='message',
+                        label='message1',
                         text='message text'
                     ),
-                    URITemplateAction(
-                        label='uri',
-                        uri='http://example.com/'
-                    )
+                    MessageTemplateAction(
+                        label='message2',
+                        text='message text'
+                    ),
                 ]
             )
         )
