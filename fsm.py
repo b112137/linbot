@@ -65,12 +65,20 @@ class TocMachine(GraphMachine):
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
-                        label='message1',
-                        text='message text'
+                        label='早餐',
+                        text='breakfast'
                     ),
                     MessageTemplateAction(
-                        label='message2',
-                        text='message text'
+                        label='午餐',
+                        text='lunch'
+                    ),
+                    MessageTemplateAction(
+                        label='晚餐',
+                        text='dinner'
+                    ),
+                    MessageTemplateAction(
+                        label='宵夜',
+                        text='midnight'
                     ),
                 ]
             )
