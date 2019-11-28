@@ -1,8 +1,13 @@
 from transitions.extensions import GraphMachine
+import os
+from linebot import LineBotApi, WebhookParser
+from linebot.models import *
 
 from utils import send_text_message
-from utils import send_button_message
+#from utils import send_button_message
 
+channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
+line_bot_api = LineBotApi(channel_access_token)
 
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
@@ -51,7 +56,32 @@ class TocMachine(GraphMachine):
                 "playload": "midnight"
             },
         ]
-        send_button_message(reply_token, "想吃什麼呢？", btn)
+        # send_button_message(reply_token, "想吃什麼呢？", btn)
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='Please select',
+                actions=[
+                    PostbackTemplateAction(
+                        label='postback',
+                        text='postback text',
+                        data='action=buy&itemid=1'
+                    ),
+                    MessageTemplateAction(
+                        label='message',
+                        text='message text'
+                    ),
+                    URITemplateAction(
+                        label='uri',
+                        uri='http://example.com/'
+                    )
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+
         self.go_back()
 
     def on_enter_state1(self, event):
