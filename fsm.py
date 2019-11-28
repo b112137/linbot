@@ -20,6 +20,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_breakfast(self, event):
         text = event.message.text
+        print(text)
         return text.lower() == "breakfast"
 
     def is_going_to_state2(self, event):

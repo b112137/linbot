@@ -30,7 +30,7 @@ machine = TocMachine(
         },
         {
             "trigger": "advance",
-            "source": ["wanteat", "breakfast"],
+            "source": "wanteat",
             "dest": "breakfast",
             "conditions": "is_going_to_breakfast",
         },
