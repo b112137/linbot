@@ -18,46 +18,8 @@ class TocMachine(GraphMachine):
         print(text)
         return text.lower() == "start"
 
-    def is_going_to_breakfast(self, event):
-        text = event.message.text
-        print(text)
-        return text.lower() == "breakfast"
-
-    def is_going_to_state2(self, event):
-        text = event.message.text
-        return text.lower() == "go to state2"
-
-    def is_going_to_state3(self, event):
-        text = event.message.text
-        return text.lower() == "go to state3"
-
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
-
-        # reply_token = event.reply_token
-        # btn = [
-        #     {
-        #         "type": "postback",
-        #         "title": "早餐",
-        #         "playload": "breakfast"
-        #     },
-        #     {
-        #         "type": "postback",
-        #         "title": "午餐",
-        #         "playload": "lunch"
-        #     },
-        #     {
-        #         "type": "postback",
-        #         "title": "晚餐",
-        #         "playload": "dinner"
-        #     },
-        #     {
-        #         "type": "postback",
-        #         "title": "宵夜",
-        #         "playload": "midnight"
-        #     },
-        # ]
-        # send_button_message(reply_token, "想吃什麼呢？", btn)
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
@@ -87,32 +49,83 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
         #self.go_back()
 
+    def is_going_to_breakfast(self, event):
+        text = event.message.text
+        return text.lower() == "breakfast"
+
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
 
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger ON breakfast")
+        send_text_message(reply_token, "Trigger breakfast")
         self.go_back()
 
-    def on_enter_state2(self, event):
-        print("I'm entering state2")
+    def is_going_to_lunch(self, event):
+        text = event.message.text
+        return text.lower() == "lunch"
+
+    def on_enter_lunch(self, event):
+        print("I'm entering lunch")
 
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger state2")
+        send_text_message(reply_token, "Trigger lunch")
         self.go_back()
 
-    def on_exit_state2(self):
-        print("Leaving state2")
+    def is_going_to_dinner(self, event):
+        text = event.message.text
+        return text.lower() == "dinner"
 
-    def on_enter_state3(self, event):
-        print("I'm entering state3")
+    def on_enter_dinner(self, event):
+        print("I'm entering dinner")
 
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger state3")
+        send_text_message(reply_token, "Trigger dinner")
         self.go_back()
 
-    def on_exit_state3(self):
-        print("Leaving state3")
+    def is_going_to_midnight(self, event):
+        text = event.message.text
+        return text.lower() == "midnight"
+
+    def on_enter_midnight(self, event):
+        print("I'm entering midnight")
+
+        reply_token = event.reply_token
+        send_text_message(reply_token, "Trigger midnight")
+        self.go_back()
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    # def on_enter_state2(self, event):
+    #     print("I'm entering state2")
+
+    #     reply_token = event.reply_token
+    #     send_text_message(reply_token, "Trigger state2")
+    #     self.go_back()
+
+    # def on_exit_state2(self):
+    #     print("Leaving state2")
+
+    # def on_enter_state3(self, event):
+    #     print("I'm entering state3")
+
+    #     reply_token = event.reply_token
+    #     send_text_message(reply_token, "Trigger state3")
+    #     self.go_back()
+
+    # def on_exit_state3(self):
+    #     print("Leaving state3")
 
 
         
