@@ -60,8 +60,8 @@ machine = TocMachine(
         },
         {
             "trigger": "go_back", 
-            "source": ["place"], 
-            "dest": "wanteat",
+            "source": ["wanteat","place"], 
+            "dest": "user",
         },
     ],
     initial="user",
