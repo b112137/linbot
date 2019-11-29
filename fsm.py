@@ -51,31 +51,31 @@ class TocMachine(GraphMachine):
 
     def is_going_to_breakfast(self, event):
         text = event.message.text
-        return text.lower() == "breakfast"
+        return text.lower() == "breakfast" or text.lower() == "換一家！"
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
-        reply_token = event.reply_token
-        # message = TemplateSendMessage(
-        #     alt_text='Buttons template',
-        #     template=ButtonsTemplate(
-        #         thumbnail_image_url='https://example.com/image.jpg',
-        #         title='Menu',
-        #         text='Please select',
-        #         actions=[
-        #             MessageTemplateAction(
-        #                 label='get',
-        #                 text='get'
-        #             ),
-        #             MessageTemplateAction(
-        #                 label='next',
-        #                 text='next'
-        #             ),
-        #         ]
-        #     )
-        # )
-        # line_bot_api.reply_message(event.reply_token, message)
-        send_text_message(reply_token, "Trigger breakfast")
+        # reply_token = event.reply_token
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='Please select',
+                actions=[
+                    MessageTemplateAction(
+                        label='獲取店家資訊,
+                        text='獲取店家資訊'
+                    ),
+                    MessageTemplateAction(
+                        label='換一家！',
+                        text='換一家！'
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+        # send_text_message(reply_token, "Trigger breakfast")
 
     def is_going_to_lunch(self, event):
         text = event.message.text
@@ -112,7 +112,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_place(self, event):
         text = event.message.text
-        return text.lower() == "get"
+        return text.lower() == "獲取店家資訊"
 
     def on_enter_place(self, event):
         print("I'm entering place")
