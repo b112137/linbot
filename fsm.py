@@ -64,7 +64,7 @@ class TocMachine(GraphMachine):
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
-                        label='獲取店家資訊,
+                        label='獲取店家資訊',
                         text='獲取店家資訊'
                     ),
                     MessageTemplateAction(
