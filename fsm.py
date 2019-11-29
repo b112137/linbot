@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from transitions.extensions import GraphMachine
 import os
 from linebot import LineBotApi, WebhookParser
