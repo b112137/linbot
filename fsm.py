@@ -52,7 +52,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_breakfast(self, event):
         text = event.message.text
-        return text.lower() == "breakfast" or text.lower() == "next"
+        return text.lower() == "breakfast"
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
