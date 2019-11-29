@@ -22,10 +22,10 @@ class TocMachine(GraphMachine):
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
         message = TemplateSendMessage(
-            alt_text='想吃什麼呢？',
+            alt_text='aaa',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='想吃什麼呢？',
+                title='aaa',
                 text='',
                 actions=[
                     MessageTemplateAction(
@@ -52,7 +52,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_breakfast(self, event):
         text = event.message.text
-        return text.lower() == "breakfast" or text.lower() == "換一家！"
+        return text.lower() == "breakfast" or text.lower() == "next"
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
@@ -61,15 +61,15 @@ class TocMachine(GraphMachine):
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
                 title='Menu',
-                text='請點選 獲取商家資訊 或 換一家！',
+                text='aaa',
                 actions=[
                     MessageTemplateAction(
-                        label='獲取商家資訊',
-                        text='獲取商家資訊'
+                        label='get',
+                        text='get'
                     ),
                     MessageTemplateAction(
-                        label='換一家！',
-                        text='換一家！'
+                        label='next',
+                        text='next'
                     ),
                 ]
             )
@@ -112,7 +112,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_place(self, event):
         text = event.message.text
-        return text.lower() == "獲取商家資訊"
+        return text.lower() == "get"
 
     def on_enter_place(self, event):
         print("I'm entering place")
