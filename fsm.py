@@ -64,8 +64,8 @@ class TocMachine(GraphMachine):
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
-                        label='獲取店家資訊',
-                        text='獲取店家資訊'
+                        label='獲取店家資訊！',
+                        text='獲取店家資訊！'
                     ),
                     MessageTemplateAction(
                         label='換一家！',
@@ -79,40 +79,85 @@ class TocMachine(GraphMachine):
 
     def is_going_to_lunch(self, event):
         text = event.message.text
-        return text.lower() == "lunch"
+        return text.lower() == "lunch" or text.lower() == "換一家！"
 
     def on_enter_lunch(self, event):
         print("I'm entering lunch")
-
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger lunch")
-        self.go_back()
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='Please select',
+                actions=[
+                    MessageTemplateAction(
+                        label='獲取店家資訊！',
+                        text='獲取店家資訊！'
+                    ),
+                    MessageTemplateAction(
+                        label='換一家！',
+                        text='換一家！'
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_dinner(self, event):
         text = event.message.text
-        return text.lower() == "dinner"
+        return text.lower() == "dinner" or text.lower() == "換一家！"
 
     def on_enter_dinner(self, event):
         print("I'm entering dinner")
-
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger dinner")
-        self.go_back()
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='Please select',
+                actions=[
+                    MessageTemplateAction(
+                        label='獲取店家資訊！',
+                        text='獲取店家資訊！'
+                    ),
+                    MessageTemplateAction(
+                        label='換一家！',
+                        text='換一家！'
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_midnight(self, event):
         text = event.message.text
-        return text.lower() == "midnight"
+        return text.lower() == "midnight" or text.lower() == "換一家！"
 
     def on_enter_midnight(self, event):
         print("I'm entering midnight")
-
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger midnight")
-        self.go_back()
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='Please select',
+                actions=[
+                    MessageTemplateAction(
+                        label='獲取店家資訊！',
+                        text='獲取店家資訊！'
+                    ),
+                    MessageTemplateAction(
+                        label='換一家！',
+                        text='換一家！'
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_place(self, event):
         text = event.message.text
-        return text.lower() == "獲取店家資訊"
+        return text.lower() == "獲取店家資訊！"
 
     def on_enter_place(self, event):
         print("I'm entering place")

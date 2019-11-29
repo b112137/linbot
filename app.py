@@ -19,7 +19,7 @@ machine = TocMachine(
             "breakfast",
             "lunch",
             "dinner",
-            "midnight"
+            "midnight",
             "place"],
     transitions=[
         {
