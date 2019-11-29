@@ -21,11 +21,11 @@ class TocMachine(GraphMachine):
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
         message = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text='想吃什麼呢？',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
-                text='Please select',
+                title='想吃什麼呢？',
+                text='',
                 actions=[
                     MessageTemplateAction(
                         label='早餐',
@@ -51,14 +51,30 @@ class TocMachine(GraphMachine):
 
     def is_going_to_breakfast(self, event):
         text = event.message.text
-        return text.lower() == "breakfast"
+        return text.lower() == "breakfast" or text.lower() == "換一家！"
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
-
-        reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger breakfast")
-        self.go_back()
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='Menu',
+                text='請點選 獲取商家資訊 或 換一家！',
+                actions=[
+                    MessageTemplateAction(
+                        label='獲取商家資訊',
+                        text='獲取商家資訊'
+                    ),
+                    MessageTemplateAction(
+                        label='換一家！',
+                        text='換一家！'
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+        #send_text_message(reply_token, "Trigger breakfast")
 
     def is_going_to_lunch(self, event):
         text = event.message.text
@@ -91,6 +107,17 @@ class TocMachine(GraphMachine):
 
         reply_token = event.reply_token
         send_text_message(reply_token, "Trigger midnight")
+        self.go_back()
+
+    def is_going_to_place(self, event):
+        text = event.message.text
+        return text.lower() == "獲取商家資訊"
+
+    def on_enter_place(self, event):
+        print("I'm entering place")
+
+        reply_token = event.reply_token
+        send_text_message(reply_token, "Trigger place")
         self.go_back()
     
 
