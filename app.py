@@ -60,7 +60,7 @@ machine = TocMachine(
         },
         {
             "trigger": "go_back", 
-            "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight" "place"], 
+            "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
             "dest": "user",
         },
     ],
