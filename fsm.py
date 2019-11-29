@@ -24,8 +24,8 @@ class TocMachine(GraphMachine):
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
-                text='Please select',
+                title='想吃什麼呢？',
+                text='點選後將隨機推薦店家！',
                 actions=[
                     MessageTemplateAction(
                         label='早餐',
