@@ -24,8 +24,8 @@ class TocMachine(GraphMachine):
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='aaa',
-                text='',
+                title='Menu',
+                text='Please select',
                 actions=[
                     MessageTemplateAction(
                         label='早餐',
@@ -55,26 +55,27 @@ class TocMachine(GraphMachine):
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
-        message = TemplateSendMessage(
-            alt_text='Buttons template',
-            template=ButtonsTemplate(
-                thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
-                text='aaa',
-                actions=[
-                    MessageTemplateAction(
-                        label='get',
-                        text='get'
-                    ),
-                    MessageTemplateAction(
-                        label='next',
-                        text='next'
-                    ),
-                ]
-            )
-        )
-        line_bot_api.reply_message(event.reply_token, message)
-        #send_text_message(reply_token, "Trigger breakfast")
+        reply_token = event.reply_token
+        # message = TemplateSendMessage(
+        #     alt_text='Buttons template',
+        #     template=ButtonsTemplate(
+        #         thumbnail_image_url='https://example.com/image.jpg',
+        #         title='Menu',
+        #         text='Please select',
+        #         actions=[
+        #             MessageTemplateAction(
+        #                 label='get',
+        #                 text='get'
+        #             ),
+        #             MessageTemplateAction(
+        #                 label='next',
+        #                 text='next'
+        #             ),
+        #         ]
+        #     )
+        # )
+        # line_bot_api.reply_message(event.reply_token, message)
+        send_text_message(reply_token, "Trigger breakfast")
 
     def is_going_to_lunch(self, event):
         text = event.message.text
