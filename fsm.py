@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 from transitions.extensions import GraphMachine
 import os
 from linebot import LineBotApi, WebhookParser
@@ -22,7 +21,7 @@ class TocMachine(GraphMachine):
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
         message = TemplateSendMessage(
-            alt_text='aaa',
+            alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
                 title='aaa',
