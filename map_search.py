@@ -1,7 +1,7 @@
 import urllib
 import json
 import requests
-from googlemaps import *
+import googlemaps
 
 google_key = "AIzaSyClQ-UNfzrPkI1mpHBHn2JFBSaN1eeeVw4"
 gmaps = googlemaps.Client(key = google_key)
