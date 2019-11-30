@@ -65,7 +65,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
-        
+        global rand, randnew, store_choosed
         randnew = random.randint(0,2)
         while(randnew == rand):
             randnew = random.randint(0,2)
@@ -178,6 +178,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_place(self, event):
         print("I'm entering place")
+        global store_choosed
         print(store_choosed)
         reply_token = event.reply_token
         send_text_message(reply_token, store_choosed)
