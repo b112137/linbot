@@ -6,8 +6,16 @@ from linebot.models import *
 from utils import send_text_message
 from utils import send_button_message
 
+import random
+
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 line_bot_api = LineBotApi(channel_access_token)
+
+breakfast_list = ["少爺手作蛋餅", "元之氣", "小孩先生"]
+lunch_list = ["菇雞", "麥當勞", "肯德基"]
+dinner_list = ["小赤佬", "職人雙饗丼", "肉肉控"]
+midnight_list = ["一點刈包", "九年九班", "小上海"]
+store_choosed = ""
 
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
@@ -55,13 +63,15 @@ class TocMachine(GraphMachine):
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
+        rand = random.randint(0,2)
+        store_choosed = breakfast_list[rand]
         # reply_token = event.reply_token
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
-                text='Please select',
+                title = store_choosed,
+                text = 'Please select',
                 actions=[
                     MessageTemplateAction(
                         label='獲取店家資訊！',
@@ -163,7 +173,7 @@ class TocMachine(GraphMachine):
         print("I'm entering place")
 
         reply_token = event.reply_token
-        send_text_message(reply_token, "Trigger place")
+        send_text_message(reply_token, store_choosed)
         self.go_back()
     
 
