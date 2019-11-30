@@ -67,9 +67,8 @@ class TocMachine(GraphMachine):
         print("I'm entering breakfast")
         
         randnew = random.randint(0,2)
-        while(randnew == rand){
+        while(randnew == rand):
             randnew = random.randint(0,2)
-        }
         rand = randnew
 
         store_choosed = breakfast_list[rand]
