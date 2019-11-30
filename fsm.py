@@ -16,6 +16,8 @@ lunch_list = ["菇雞", "麥當勞", "肯德基"]
 dinner_list = ["小赤佬", "職人雙饗丼", "肉肉控"]
 midnight_list = ["一點刈包", "九年九班", "小上海"]
 store_choosed = ""
+rand = -1
+randnew = -1
 
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
@@ -63,7 +65,13 @@ class TocMachine(GraphMachine):
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
-        rand = random.randint(0,2)
+        
+        randnew = random.randint(0,2)
+        while(randnew == rand){
+            randnew = random.randint(0,2)
+        }
+        rand = randnew
+
         store_choosed = breakfast_list[rand]
         # reply_token = event.reply_token
         message = TemplateSendMessage(
@@ -171,7 +179,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_place(self, event):
         print("I'm entering place")
-
+        print(store_choosed)
         reply_token = event.reply_token
         send_text_message(reply_token, store_choosed)
         self.go_back()
