@@ -7,7 +7,7 @@ from utils import send_text_message
 from utils import send_button_message
 
 import random
-from map_search import search_message
+from map_search import search_message, search_photo
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 line_bot_api = LineBotApi(channel_access_token)
@@ -84,11 +84,12 @@ class TocMachine(GraphMachine):
                     rand_repeat = 0
         randold.append(rand)
         store_choosed = breakfast_list[rand]
+        store_photo = search_photo(store_choosed)
         # reply_token = event.reply_token
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
-                thumbnail_image_url='https://example.com/image.jpg',
+                thumbnail_image_url = store_photo,
                 title = store_choosed,
                 text = 'Please select',
                 actions=[
