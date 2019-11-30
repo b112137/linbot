@@ -244,8 +244,24 @@ class TocMachine(GraphMachine):
         reply_token = event.reply_token
 
         message = search_message(store_choosed)
+        btn = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title = store_choosed,
+                text=message,
+                actions=[
+                    MessageTemplateAction(
+                        label='獲取店家資訊！',
+                        text='獲取店家資訊！'
+                    ),
+                ]
+            )
+        )
 
-        send_text_message(reply_token, message)
+        line_bot_api.reply_message(event.reply_token, btn)
+
+        #send_text_message(reply_token, message)
         self.go_back()
     
 

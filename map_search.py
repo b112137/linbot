@@ -68,7 +68,7 @@ def search_message(store_name):
         except:
             store_website = "Not Found"
         
-        message = "店名：" + store_name + "\n\n地址：" + store_address + "\n\n電話：" + store_phone + "\n\n營業時間：" + store_open + "\n\n價位：" + store_price + "\n\n評價：" + str(store_rating) + "\n\n官網：" + store_website
+        message = "店名：" + store_name + "\n地址：" + store_address + "\n電話：" + store_phone + "\n營業時間：" + store_open + "\n價位：" + store_price + "\n評價：" + str(store_rating) + "\n官網：" + store_website
     except:
         message = "Not Found"
     
