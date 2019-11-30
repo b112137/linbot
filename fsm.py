@@ -71,11 +71,11 @@ class TocMachine(GraphMachine):
         while(rand_repeat):
             rand = random.randint(0,2)
             for i in range(0,len(randold)):
-            if(rand == randold[i]):
-                rand_repeat = 1
-                break
-            else:
-                rand_repeat = 0
+                if(rand == randold[i]):
+                    rand_repeat = 1
+                    break
+                else:
+                    rand_repeat = 0
         randold.append(rand)
         store_choosed = breakfast_list[rand]
         # reply_token = event.reply_token
