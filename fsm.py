@@ -73,6 +73,8 @@ class TocMachine(GraphMachine):
 
         rand_repeat = 1
         while(rand_repeat):
+            if(len(randold) > len(breakfast_list)):
+                randold = [-1]
             rand = random.randint(0,len(breakfast_list))
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
@@ -114,6 +116,8 @@ class TocMachine(GraphMachine):
         
         rand_repeat = 1
         while(rand_repeat):
+            if(len(randold) > len(lunch_list)):
+                randold = [-1]
             rand = random.randint(0,len(lunch_list))
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
@@ -154,6 +158,8 @@ class TocMachine(GraphMachine):
         
         rand_repeat = 1
         while(rand_repeat):
+            if(len(randold) > len(dinner_list)):
+                randold = [-1]
             rand = random.randint(0,len(dinner_list))
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
@@ -194,6 +200,8 @@ class TocMachine(GraphMachine):
         
         rand_repeat = 1
         while(rand_repeat):
+            if(len(randold) > len(midnight_list)):
+                randold = [-1]
             rand = random.randint(0,len(midnight_list))
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
