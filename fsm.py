@@ -7,11 +7,12 @@ from utils import send_text_message
 from utils import send_button_message
 
 import random
+import map_search
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 line_bot_api = LineBotApi(channel_access_token)
 
-breakfast_list = ["少爺手作蛋餅", "元之氣", "小孩先生","菇雞", "麥當勞", "肯德基","小赤佬", "職人雙饗丼", "肉肉控"]
+breakfast_list = ["少爺手作蛋餅 勝利", "元之氣 勝利", "小孩先生 勝利"]
 lunch_list = ["菇雞", "麥當勞", "肯德基"]
 dinner_list = ["小赤佬", "職人雙饗丼", "肉肉控"]
 midnight_list = ["一點刈包", "九年九班", "小上海"]
@@ -30,6 +31,9 @@ class TocMachine(GraphMachine):
 
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
+        global store_choosed, randold
+        store_choosed = ""
+        randold = [-1]
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
@@ -65,11 +69,11 @@ class TocMachine(GraphMachine):
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
-        global rand, randnew, store_choosed
+        global rand, randold, store_choosed
 
         rand_repeat = 1
         while(rand_repeat):
-            rand = random.randint(0,8)
+            rand = random.randint(0,len(breakfast_list))
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
                     rand_repeat = 1
@@ -106,11 +110,25 @@ class TocMachine(GraphMachine):
 
     def on_enter_lunch(self, event):
         print("I'm entering lunch")
+        global rand, randold, store_choosed
+        
+        rand_repeat = 1
+        while(rand_repeat):
+            rand = random.randint(0,len(lunch_list))
+            for i in range(0,len(randold)):
+                if(rand == randold[i]):
+                    rand_repeat = 1
+                    break
+                else:
+                    rand_repeat = 0
+        randold.append(rand)
+        store_choosed = lunch_list[rand]
+
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
+                title = store_choosed,
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
@@ -132,11 +150,25 @@ class TocMachine(GraphMachine):
 
     def on_enter_dinner(self, event):
         print("I'm entering dinner")
+        global rand, randold, store_choosed
+        
+        rand_repeat = 1
+        while(rand_repeat):
+            rand = random.randint(0,len(dinner_list))
+            for i in range(0,len(randold)):
+                if(rand == randold[i]):
+                    rand_repeat = 1
+                    break
+                else:
+                    rand_repeat = 0
+        randold.append(rand)
+        store_choosed = dinner_list[rand]
+
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
+                title = store_choosed,
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
@@ -158,11 +190,25 @@ class TocMachine(GraphMachine):
 
     def on_enter_midnight(self, event):
         print("I'm entering midnight")
+        global rand, randold, store_choosed
+        
+        rand_repeat = 1
+        while(rand_repeat):
+            rand = random.randint(0,len(midnight_list))
+            for i in range(0,len(randold)):
+                if(rand == randold[i]):
+                    rand_repeat = 1
+                    break
+                else:
+                    rand_repeat = 0
+        randold.append(rand)
+        store_choosed = midnight_list[rand]
+
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://example.com/image.jpg',
-                title='Menu',
+                title = store_choosed,
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
@@ -187,6 +233,9 @@ class TocMachine(GraphMachine):
         global store_choosed
         print(store_choosed)
         reply_token = event.reply_token
+
+        message = search_message(store_choosed)
+
         send_text_message(reply_token, store_choosed)
         self.go_back()
     
