@@ -242,9 +242,9 @@ class TocMachine(GraphMachine):
         print(store_choosed)
         reply_token = event.reply_token
 
-        #message = search_message(store_choosed)
+        message = search_message(store_choosed)
 
-        send_text_message(reply_token, store_choosed)
+        send_text_message(reply_token, message)
         self.go_back()
     
 
