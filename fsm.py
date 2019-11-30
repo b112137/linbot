@@ -12,7 +12,7 @@ from map_search import search_message, search_photo
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 line_bot_api = LineBotApi(channel_access_token)
 
-breakfast_list = ["少爺手作蛋餅 勝利", "元之氣 勝利", "小孩先生 勝利"]
+breakfast_list = ["少爺手作蛋餅", "元之氣 勝利店", "小孩先生"]
 lunch_list = ["菇雞", "麥當勞", "肯德基"]
 dinner_list = ["小赤佬", "職人雙饗丼", "肉肉控"]
 midnight_list = ["一點刈包", "九年九班", "小上海"]
