@@ -69,7 +69,7 @@ class TocMachine(GraphMachine):
 
         rand_repeat = 1
         while(rand_repeat):
-            rand = random.randint(0,2)
+            rand = random.randint(0,8)
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
                     rand_repeat = 1
