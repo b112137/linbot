@@ -7,7 +7,7 @@ from utils import send_text_message
 from utils import send_button_message
 
 import random
-import map_search import search_message
+from map_search import search_message
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 line_bot_api = LineBotApi(channel_access_token)
