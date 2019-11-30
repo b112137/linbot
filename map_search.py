@@ -34,7 +34,7 @@ def search_message(store_name):
     #                 store_open = store_open + "\n　　　　　" + open
     #             count = count + 1
             for open in store_open_list:
-                store_open = store_open + "\n　" + open
+                store_open = store_open + "\n" + open
         except:
             store_open = "Not Found"
 
@@ -68,25 +68,25 @@ def search_message(store_name):
         except:
             store_website = "Not Found"
         
-        message = "店名：" + store_name + "\n地址：" + store_address + "\n電話：" + store_phone + "\n營業時間：" + store_open + "\n價位：" + store_price + "\n評價：" + str(store_rating) + "\n官網：" + store_website
+        message = "店名：" + store_name + "\n\n地址：" + store_address + "\n\n電話：" + store_phone + "\n\n營業時間：" + store_open + "\n\n價位：" + store_price + "\n\n評價：" + str(store_rating) + "\n\n官網：" + store_website
     except:
         message = "Not Found"
     
     return message
 
-    def search_photo(store_name):
-        address = "麥芽糖"
-        addurl = "https://maps.googleapis.com/maps/api/geocode/json?key={}&address={}&sensor=false".format(google_key,address)
-        addressReq = requests.get(addurl)
-        addressDoc = addressReq.json()
+def search_photo(store_name):
+    address = store_name
+    addurl = "https://maps.googleapis.com/maps/api/geocode/json?key={}&address={}&sensor=false".format(google_key,address)
+    addressReq = requests.get(addurl)
+    addressDoc = addressReq.json()
 
-        try:
-            place_id = addressDoc["results"][0]["place_id"]
-            detail_results = gmaps.place(place_id, language = "zh-tw")
-            photo_reference = detail_results["result"]["photos"][0]["photo_reference"]
-            photo_width = detail_results["result"]["photos"][0]["width"]
-            photo_url = "https://maps.googleapis.com/maps/api/place/photo?key={}&photoreference={}&maxwidth={}".format(google_key, photo_reference, photo_width)
-        except:
-            photo_url = "https://www.bomb01.com/upload/news/original/c95e0d21eda50ebc16d5f8ef568f60a7.png"
+    try:
+        place_id = addressDoc["results"][0]["place_id"]
+        detail_results = gmaps.place(place_id, language = "zh-tw")
+        photo_reference = detail_results["result"]["photos"][0]["photo_reference"]
+        photo_width = detail_results["result"]["photos"][0]["width"]
+        photo_url = "https://maps.googleapis.com/maps/api/place/photo?key={}&photoreference={}&maxwidth={}".format(google_key, photo_reference, photo_width)
+    except:
+        photo_url = "https://www.bomb01.com/upload/news/original/c95e0d21eda50ebc16d5f8ef568f60a7.png"
 
-        return photo_url
+    return photo_url
