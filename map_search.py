@@ -6,6 +6,7 @@ import googlemaps
 google_key = "AIzaSyClQ-UNfzrPkI1mpHBHn2JFBSaN1eeeVw4"
 gmaps = googlemaps.Client(key = google_key)
 
+
 def search_message(store_name):
     address = store_name
     addurl = "https://maps.googleapis.com/maps/api/geocode/json?key={}&address={}&sensor=false".format(google_key,address)
