@@ -128,11 +128,12 @@ class TocMachine(GraphMachine):
                     rand_repeat = 0
         randold.append(rand)
         store_choosed = lunch_list[rand]
+        store_photo = search_photo(store_choosed)
 
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
-                thumbnail_image_url='https://example.com/image.jpg',
+                thumbnail_image_url = store_photo,
                 title = store_choosed,
                 text='Please select',
                 actions=[
@@ -170,11 +171,12 @@ class TocMachine(GraphMachine):
                     rand_repeat = 0
         randold.append(rand)
         store_choosed = dinner_list[rand]
+        store_photo = search_photo(store_choosed)
 
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
-                thumbnail_image_url='https://example.com/image.jpg',
+                thumbnail_image_url = store_photo,
                 title = store_choosed,
                 text='Please select',
                 actions=[
@@ -212,11 +214,12 @@ class TocMachine(GraphMachine):
                     rand_repeat = 0
         randold.append(rand)
         store_choosed = midnight_list[rand]
+        store_photo = search_photo(store_choosed)
 
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
-                thumbnail_image_url='https://example.com/image.jpg',
+                thumbnail_image_url = store_photo,
                 title = store_choosed,
                 text='Please select',
                 actions=[
@@ -244,24 +247,8 @@ class TocMachine(GraphMachine):
         reply_token = event.reply_token
 
         message = search_message(store_choosed)
-        btn = TemplateSendMessage(
-            alt_text='Buttons template',
-            template=ButtonsTemplate(
-                thumbnail_image_url='https://example.com/image.jpg',
-                title = store_choosed,
-                text=message,
-                actions=[
-                    MessageTemplateAction(
-                        label='獲取店家資訊！',
-                        text='獲取店家資訊！'
-                    ),
-                ]
-            )
-        )
 
-        line_bot_api.reply_message(event.reply_token, btn)
-
-        #send_text_message(reply_token, message)
+        send_text_message(reply_token, message)
         self.go_back()
     
 

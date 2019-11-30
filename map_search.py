@@ -68,7 +68,13 @@ def search_message(store_name):
         except:
             store_website = "Not Found"
         
-        message = "店名：" + store_name + "\n地址：" + store_address + "\n電話：" + store_phone + "\n營業時間：" + store_open + "\n價位：" + store_price + "\n評價：" + str(store_rating) + "\n官網：" + store_website
+        try:
+            lat = detail_results["result"]["geometry"]["location"]["lat"]
+            lng = detail_results["result"]["geometry"]["location"]["lng"]
+            map_url = "https://www.google.com/maps/search/?api=1&query={},{}&query_place_id={}".format(lat, lng, place_id)
+        except:
+            map_url = "Not Found"
+        message = "店名：" + store_name + "\n地址：" + store_address + "\n電話：" + store_phone + "\n營業時間：" + store_open + "\n價位：" + store_price + "\n評價：" + str(store_rating) + "\n地圖：" + map_url
     except:
         message = "Not Found"
     
