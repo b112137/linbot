@@ -11,13 +11,13 @@ import random
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 line_bot_api = LineBotApi(channel_access_token)
 
-breakfast_list = ["少爺手作蛋餅", "元之氣", "小孩先生"]
+breakfast_list = ["少爺手作蛋餅", "元之氣", "小孩先生","菇雞", "麥當勞", "肯德基","小赤佬", "職人雙饗丼", "肉肉控"]
 lunch_list = ["菇雞", "麥當勞", "肯德基"]
 dinner_list = ["小赤佬", "職人雙饗丼", "肉肉控"]
 midnight_list = ["一點刈包", "九年九班", "小上海"]
 store_choosed = ""
+randold = [-1]
 rand = -1
-randnew = -1
 
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
@@ -66,11 +66,17 @@ class TocMachine(GraphMachine):
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
         global rand, randnew, store_choosed
-        randnew = random.randint(0,2)
-        while(randnew == rand):
-            randnew = random.randint(0,2)
-        rand = randnew
 
+        rand_repeat = 1
+        while(rand_repeat):
+            rand = random.randint(0,2)
+            for i in range(0,len(randold)):
+            if(rand == randold[i]):
+                rand_repeat = 1
+                break
+            else:
+                rand_repeat = 0
+        randold.append(rand)
         store_choosed = breakfast_list[rand]
         # reply_token = event.reply_token
         message = TemplateSendMessage(
