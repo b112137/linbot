@@ -12,7 +12,6 @@ from map_search import search_message, search_photo
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name("./auth.json", scope)
 client = gspread.authorize(creds)
@@ -20,14 +19,15 @@ client = gspread.authorize(creds)
 spreadsheet_key = "15X-GEDSNyUfA_5JFOkh4LjTdIBeq-rBrEdJ2GPVYGl8"
 sheet = client.open_by_key(spreadsheet_key).sheet1
 
-
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 line_bot_api = LineBotApi(channel_access_token)
 
-breakfast_list = []
-lunch_list = []
-dinner_list = []
-midnight_list = []
+multi_user_id = []
+multi_user_breakfast = []
+multi_user_lunch = []
+multi_user_dinner = []
+multi_user_midnight = []
+
 store_choosed = ""
 randold = [-1]
 rand = -1
@@ -43,24 +43,37 @@ class TocMachine(GraphMachine):
 
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
-        global store_choosed, randold, breakfast_list, lunch_list, dinner_list, midnight_list
+        global store_choosed, randold, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight
         
-        breakfast_list = []
-        lunch_list = []
-        dinner_list = []
-        midnight_list = []
+        check_exist = 0
+        user_id = event.source.user_id
+        for id in multi_user_id:
+            if user_id == id:
+                check_exist = 1
+                break
+        if(check_exist == 0):
+            multi_user_id.append(user_id)
+            multi_user_breakfast.append([])
+            multi_user_lunch.append([])
+            multi_user_dinner.append([])
+            multi_user_midnight.append([])
+
+        multi_user_breakfast[multi_user_id.index(user_id)] = []
+        multi_user_lunch[multi_user_id.index(user_id)] = []
+        multi_user_dinner[multi_user_id.index(user_id)] = []
+        multi_user_midnight[multi_user_id.index(user_id)] = []
 
         sheet_dic = sheet.get_all_records()
         for i in range(0,len(sheet_dic)):
             if(sheet_dic[i]["user_id"] == "global"):
                 if(sheet_dic[i]["breakfast"] != 0):
-                    breakfast_list.append(sheet_dic[i]["breakfast"])
+                    multi_user_breakfast[multi_user_id.index(user_id)].append(sheet_dic[i]["breakfast"])
                 if(sheet_dic[i]["lunch"] != 0):
-                    lunch_list.append(sheet_dic[i]["lunch"])
+                    multi_user_lunch[multi_user_id.index(user_id)].append(sheet_dic[i]["lunch"])
                 if(sheet_dic[i]["dinner"] != 0):
-                    dinner_list.append(sheet_dic[i]["dinner"])
+                    multi_user_dinner[multi_user_id.index(user_id)].append(sheet_dic[i]["dinner"])
                 if(sheet_dic[i]["midnight"] != 0):
-                    midnight_list.append(sheet_dic[i]["midnight"])
+                    multi_user_midnight[multi_user_id.index(user_id)].append(sheet_dic[i]["midnight"])
 
         store_choosed = ""
         randold = [-1]
@@ -101,11 +114,13 @@ class TocMachine(GraphMachine):
         print("I'm entering breakfast")
         global rand, randold, store_choosed
 
+        user_id = event.source.user_id
+
         rand_repeat = 1
         while(rand_repeat):
-            if(len(randold) > len(breakfast_list)):
+            if(len(randold) > len(multi_user_breakfast[multi_user_id.index(user_id)])):
                 randold = [-1]
-            rand = random.randint(0,len(breakfast_list)-1)
+            rand = random.randint(0,len(multi_user_breakfast[multi_user_id.index(user_id)])-1)
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
                     rand_repeat = 1
@@ -113,7 +128,7 @@ class TocMachine(GraphMachine):
                 else:
                     rand_repeat = 0
         randold.append(rand)
-        store_choosed = breakfast_list[rand]
+        store_choosed = multi_user_breakfast[multi_user_id.index(user_id)][rand]
         store_photo = search_photo(store_choosed)
         # reply_token = event.reply_token
         message = TemplateSendMessage(
