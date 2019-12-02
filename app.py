@@ -204,7 +204,7 @@ def webhook_handler():
         response = multi_user_machine[multi_user_id.index(user_id)].advance(event)
         if response == False:
             send_text_message(event.reply_token, "Not Entering any State")
-
+    
     return "OK"
 
 
