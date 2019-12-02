@@ -132,6 +132,7 @@ def webhook_handler():
     #user_id = events[0]["message"]
     print(ev)
 
+
     # if event is MessageEvent and message is TextMessage, then echo text
     for event in events:
         if not isinstance(event, MessageEvent):
