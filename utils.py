@@ -38,7 +38,6 @@ def send_button_message(id, text, btn):
     return response
     
 
-
 """
 def send_image_url(id, img_url):
     pass
