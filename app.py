@@ -1,6 +1,5 @@
 import os
 import sys
-import pandas as pd
 
 from flask import Flask, jsonify, request, abort, send_file
 from dotenv import load_dotenv
@@ -128,9 +127,8 @@ def webhook_handler():
     except InvalidSignatureError:
         abort(400)
 
-    ev = pd.DataFrame(events)
-    #user_id = events[0]["message"]
-    print(ev)
+    user_id = events[0].source.userId
+    print(user_id)
 
 
     # if event is MessageEvent and message is TextMessage, then echo text
