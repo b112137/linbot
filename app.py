@@ -149,7 +149,7 @@ def webhook_handler():
             continue
         if not isinstance(event.message.text, str):
             continue
-        print(f"\nFSM STATE: {machine.state}")
+        print(f"\nFSM STATE: {multi_user_machine[multi_user_id.index(user_id)].state}")
         print(f"REQUEST BODY: \n{body}")
         
         response = multi_user_machine[multi_user_id.index(user_id)].advance(event)
