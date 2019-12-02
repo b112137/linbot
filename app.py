@@ -126,9 +126,9 @@ def webhook_handler():
     except InvalidSignatureError:
         abort(400)
 
-    user_id = events["events"][0]["source"]["userId"]
-    print(user_id)
-    
+    #user_id = events[0]["source"]["userId"]
+    print(events)
+
     # if event is MessageEvent and message is TextMessage, then echo text
     for event in events:
         if not isinstance(event, MessageEvent):
