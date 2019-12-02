@@ -12,6 +12,7 @@ from map_search import search_message, search_photo
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
+
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name("./auth.json", scope)
 client = gspread.authorize(creds)
