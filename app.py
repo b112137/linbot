@@ -10,9 +10,10 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from fsm import TocMachine
 from utils import send_text_message
 
-
 load_dotenv()
 
+multi_user_id = []
+multi_user_machine = []
 
 machine = TocMachine(
     states=["user",
@@ -113,9 +114,9 @@ def callback():
 
     return "OK"
 
-
 @app.route("/webhook", methods=["POST"])
 def webhook_handler():
+    global multi_user_id, multi_user_machine
     signature = request.headers["X-Line-Signature"]
     # get request body as text
     body = request.get_data(as_text=True)
@@ -127,9 +128,15 @@ def webhook_handler():
     except InvalidSignatureError:
         abort(400)
 
-    user_id = events[0].source.user_id 
-    print(user_id)
-
+    check_exist = 0
+    user_id = events[0].source.user_id
+    for id in multi_user_id:
+        if user_id == id:
+            check_exist = 1
+            break
+    if(check_exist == 0):
+        multi_user_id.append(user_id)
+        multi_user_machine.append(machine)
 
     # if event is MessageEvent and message is TextMessage, then echo text
     for event in events:
@@ -142,7 +149,7 @@ def webhook_handler():
         print(f"\nFSM STATE: {machine.state}")
         print(f"REQUEST BODY: \n{body}")
         
-        response = machine.advance(event)
+        response = multi_user_machine[multi_user_id.index(user_id).advance(event)
         if response == False:
             send_text_message(event.reply_token, "Not Entering any State")
 
