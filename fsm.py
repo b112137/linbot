@@ -9,13 +9,24 @@ from utils import send_button_message
 import random
 from map_search import search_message, search_photo
 
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name("./auth.json", scope)
+client = gspread.authorize(creds)
+
+spreadsheet_key = "15X-GEDSNyUfA_5JFOkh4LjTdIBeq-rBrEdJ2GPVYGl8"
+sheet = client.open_by_key(spreadsheet_key).sheet1
+
+
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 line_bot_api = LineBotApi(channel_access_token)
 
-breakfast_list = ["少爺手作蛋餅", "元之氣 勝利店", "小孩先生"]
-lunch_list = ["菇雞", "麥當勞", "肯德基"]
-dinner_list = ["小赤佬", "職人雙饗丼", "肉肉控"]
-midnight_list = ["一點刈包", "九年九班", "小上海"]
+breakfast_list = []
+lunch_list = []
+dinner_list = []
+midnight_list = []
 store_choosed = ""
 randold = [-1]
 rand = -1
@@ -32,6 +43,24 @@ class TocMachine(GraphMachine):
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
         global store_choosed, randold
+        
+        breakfast_list = []
+        lunch_list = []
+        dinner_list = []
+        midnight_list = []
+
+        sheet_dic = sheet.get_all_records()
+        for i in range(0,len(sheet_dic)):
+            if(sheet_dic[i]["user_id"] == "global"):
+                if(sheet_dic[i]["breakfast"] != 0):
+                    breakfast_list.append(sheet_dic[i]["breakfast"])
+                if(sheet_dic[i]["lunch"] != 0):
+                    lunch_list.append(sheet_dic[i]["lunch"])
+                if(sheet_dic[i]["dinner"] != 0):
+                    dinner_list.append(sheet_dic[i]["dinner"])
+                if(sheet_dic[i]["midnight"] != 0):
+                    midnight_list.append(sheet_dic[i]["midnight"])
+
         store_choosed = ""
         randold = [-1]
         message = TemplateSendMessage(

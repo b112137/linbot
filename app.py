@@ -143,55 +143,52 @@ def webhook_handler():
             "dinner",
             "midnight",
             "place"],
-    transitions=[
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "wanteat",
-            "conditions": "is_going_to_wanteat",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat","breakfast"],
-            "dest": "breakfast",
-            "conditions": "is_going_to_breakfast",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "lunch"],
-            "dest": "lunch",
-            "conditions": "is_going_to_lunch",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "dinner"],
-            "dest": "dinner",
-            "conditions": "is_going_to_dinner",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "midnight"],
-            "dest": "midnight",
-            "conditions": "is_going_to_midnight",
-        },
-        {
-            "trigger": "advance",
-            "source": ["breakfast", "lunch", "dinner", "midnight"],
-            "dest": "place",
-            "conditions": "is_going_to_place",
-        },
-        {
-            "trigger": "go_back", 
-            "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
-            "dest": "user",
-        },
-    ],
-    initial="user",
-    auto_transitions=False,
-    show_conditions=True,))
-
-    print(user_id)
-    print(multi_user_id.index(user_id))
+        transitions=[
+            {
+                "trigger": "advance",
+                "source": "user",
+                "dest": "wanteat",
+                "conditions": "is_going_to_wanteat",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat","breakfast"],
+                "dest": "breakfast",
+                "conditions": "is_going_to_breakfast",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat", "lunch"],
+                "dest": "lunch",
+                "conditions": "is_going_to_lunch",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat", "dinner"],
+                "dest": "dinner",
+                "conditions": "is_going_to_dinner",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat", "midnight"],
+                "dest": "midnight",
+                "conditions": "is_going_to_midnight",
+            },
+            {
+                "trigger": "advance",
+                "source": ["breakfast", "lunch", "dinner", "midnight"],
+                "dest": "place",
+                "conditions": "is_going_to_place",
+            },
+            {
+                "trigger": "go_back", 
+                "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
+                "dest": "user",
+            },
+        ],
+        initial="user",
+        auto_transitions=False,
+        show_conditions=True,))
 
     # if event is MessageEvent and message is TextMessage, then echo text
     for event in events:
