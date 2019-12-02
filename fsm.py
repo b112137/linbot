@@ -160,11 +160,13 @@ class TocMachine(GraphMachine):
         print("I'm entering lunch")
         global rand, randold, store_choosed
         
+        user_id = event.source.user_id
+
         rand_repeat = 1
         while(rand_repeat):
-            if(len(randold) > len(lunch_list)):
+            if(len(randold) > len(multi_user_lunch[multi_user_id.index(user_id)])):
                 randold = [-1]
-            rand = random.randint(0,len(lunch_list)-1)
+            rand = random.randint(0,len(multi_user_lunch[multi_user_id.index(user_id)])-1)
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
                     rand_repeat = 1
@@ -172,7 +174,7 @@ class TocMachine(GraphMachine):
                 else:
                     rand_repeat = 0
         randold.append(rand)
-        store_choosed = lunch_list[rand]
+        store_choosed = multi_user_lunch[multi_user_id.index(user_id)][rand]
         store_photo = search_photo(store_choosed)
 
         message = TemplateSendMessage(
@@ -203,11 +205,13 @@ class TocMachine(GraphMachine):
         print("I'm entering dinner")
         global rand, randold, store_choosed
         
+        user_id = event.source.user_id
+
         rand_repeat = 1
         while(rand_repeat):
-            if(len(randold) > len(dinner_list)):
+            if(len(randold) > len(multi_user_dinner[multi_user_id.index(user_id)])):
                 randold = [-1]
-            rand = random.randint(0,len(dinner_list)-1)
+            rand = random.randint(0,len(multi_user_dinner[multi_user_id.index(user_id)])-1)
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
                     rand_repeat = 1
@@ -215,7 +219,7 @@ class TocMachine(GraphMachine):
                 else:
                     rand_repeat = 0
         randold.append(rand)
-        store_choosed = dinner_list[rand]
+        store_choosed = multi_user_dinner[multi_user_id.index(user_id)][rand]
         store_photo = search_photo(store_choosed)
 
         message = TemplateSendMessage(
@@ -246,11 +250,13 @@ class TocMachine(GraphMachine):
         print("I'm entering midnight")
         global rand, randold, store_choosed
         
+        user_id = event.source.user_id
+
         rand_repeat = 1
         while(rand_repeat):
-            if(len(randold) > len(midnight_list)):
+            if(len(randold) > len(multi_user_midnight[multi_user_id.index(user_id)])):
                 randold = [-1]
-            rand = random.randint(0,len(midnight_list)-1)
+            rand = random.randint(0,len(multi_user_midnight[multi_user_id.index(user_id)])-1)
             for i in range(0,len(randold)):
                 if(rand == randold[i]):
                     rand_repeat = 1
@@ -258,7 +264,7 @@ class TocMachine(GraphMachine):
                 else:
                     rand_repeat = 0
         randold.append(rand)
-        store_choosed = midnight_list[rand]
+        store_choosed = multi_user_midnight[multi_user_id.index(user_id)][rand]
         store_photo = search_photo(store_choosed)
 
         message = TemplateSendMessage(
