@@ -126,6 +126,9 @@ def webhook_handler():
     except InvalidSignatureError:
         abort(400)
 
+    user_id = events["events"][0]["source"]["userId"]
+    print(user_id)
+    
     # if event is MessageEvent and message is TextMessage, then echo text
     for event in events:
         if not isinstance(event, MessageEvent):
@@ -136,6 +139,7 @@ def webhook_handler():
             continue
         print(f"\nFSM STATE: {machine.state}")
         print(f"REQUEST BODY: \n{body}")
+        
         response = machine.advance(event)
         if response == False:
             send_text_message(event.reply_token, "Not Entering any State")
