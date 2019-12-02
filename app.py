@@ -138,6 +138,9 @@ def webhook_handler():
         multi_user_id.append(user_id)
         multi_user_machine.append(machine)
 
+    print(user_id)
+    print(multi_user_id.index(user_id))
+
     # if event is MessageEvent and message is TextMessage, then echo text
     for event in events:
         if not isinstance(event, MessageEvent):
