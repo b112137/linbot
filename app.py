@@ -1,5 +1,6 @@
 import os
 import sys
+import pandas as pd
 
 from flask import Flask, jsonify, request, abort, send_file
 from dotenv import load_dotenv
@@ -9,6 +10,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 from fsm import TocMachine
 from utils import send_text_message
+
 
 load_dotenv()
 
@@ -126,8 +128,9 @@ def webhook_handler():
     except InvalidSignatureError:
         abort(400)
 
-    user_id = events[0]["message"]
-    print(user_id)
+    ev = pd.DataFrame(events)
+    #user_id = events[0]["message"]
+    print(ev)
 
     # if event is MessageEvent and message is TextMessage, then echo text
     for event in events:
