@@ -127,7 +127,7 @@ def webhook_handler():
     except InvalidSignatureError:
         abort(400)
 
-    user_id = events[0].source[1]
+    user_id = events[0].source.user_id 
     print(user_id)
 
 
