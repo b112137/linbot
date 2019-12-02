@@ -149,7 +149,7 @@ def webhook_handler():
         print(f"\nFSM STATE: {machine.state}")
         print(f"REQUEST BODY: \n{body}")
         
-        response = multi_user_machine[multi_user_id.index(user_id).advance(event)
+        response = multi_user_machine[multi_user_id.index(user_id)].advance(event)
         if response == False:
             send_text_message(event.reply_token, "Not Entering any State")
 
