@@ -43,7 +43,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
-        global store_choosed, randold
+        global store_choosed, randold, breakfast_list, lunch_list, dinner_list, midnight_list
         
         breakfast_list = []
         lunch_list = []
