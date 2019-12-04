@@ -204,6 +204,12 @@ def webhook_handler():
             },
             {
                 "trigger": "advance",
+                "source": "arrange_store",
+                "dest": "arrange_type",
+                "conditions": "is_going_to_arrange_type",
+            },
+            {
+                "trigger": "advance",
                 "source": "arrange_type",
                 "dest": "add_store",
                 "conditions": "is_going_to_arrange_type",
