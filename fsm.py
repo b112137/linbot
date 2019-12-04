@@ -514,25 +514,30 @@ class TocMachine(GraphMachine):
             self.go_back()
         else:
             message = search_message(want_add_text)
-            template_message = TemplateSendMessage(
-                alt_text='目錄 template',
-                template = ConfirmTemplate(
-                    title= "是否加入\"" + want_add_text + "\"至店家列表？",
-                    text='請確認上述店家資訊',
-                    actions=[                              
-                        MessageTemplateAction(
-                            label='是',
-                            text='是',
-                        ),
-                        MessageTemplateAction(
-                            label='否',
-                            text='否'
-                        )
-                    ]
+            if(message == "Not Found"):
+                message = "找不到此店家，請重新輸入！"
+                send_text_message(event.reply_token, message)
+                self.go_back()
+            else:
+                template_message = TemplateSendMessage(
+                    alt_text='目錄 template',
+                    template = ConfirmTemplate(
+                        title= "是否加入\"" + want_add_text + "\"至店家列表？",
+                        text='請確認上述店家資訊',
+                        actions=[                              
+                            MessageTemplateAction(
+                                label='是',
+                                text='是',
+                            ),
+                            MessageTemplateAction(
+                                label='否',
+                                text='否'
+                            )
+                        ]
+                    )
                 )
-            )
-            send_text_message(event.reply_token, message)
-            line_bot_api.push_message(user_id, template_message)
+                send_text_message(event.reply_token, message)
+                line_bot_api.push_message(user_id, template_message)
 
 # if(arrange_type == 1):
             
