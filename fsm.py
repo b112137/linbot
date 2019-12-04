@@ -37,13 +37,13 @@ class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
         self.machine = GraphMachine(model=self, **machine_configs)
 
-    def is_going_to_wanteat(self, event):
+    def is_going_to_feature(self, event):
         text = event.message.text
         print(text)
         return text.lower() == "start"
 
-    def on_enter_wanteat(self, event):
-        print("I'm entering wanteat")
+    def on_enter_feature(self, event):
+        print("I'm entering feature")
         global store_choosed, randold, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
         
         check_exist = 0
@@ -78,84 +78,80 @@ class TocMachine(GraphMachine):
                 if(sheet_dic[i]["midnight"] != 0):
                     multi_user_midnight[multi_user_id.index(user_id)].append(sheet_dic[i]["midnight"])
 
-        multi_user_store_choosed[multi_user_id.index(user_id)] = ""
-        multi_user_randold[multi_user_id.index(user_id)] = [-1]
         message = TemplateSendMessage(
             alt_text='Carousel template',
-            template=CarouselTemplate(
-                columns=[
-                    CarouselColumn(
-                        thumbnail_image_url='https://example.com/image.jpg',
-                        title='想吃什麼呢？',
-                        text='點選後將隨機推薦店家！',
-                        actions=[
-                            MessageTemplateAction(
-                                label='早餐',
-                                text='breakfast'
-                            ),
-                            MessageTemplateAction(
-                                label='午餐',
-                                text='lunch'
-                            ),
-                            MessageTemplateAction(
-                                label='晚餐',
-                                text='dinner'
-                            ),
-                            MessageTemplateAction(
-                                label='宵夜',
-                                text='midnight'
-                            ),
-                        ]
-                    ),
-                    CarouselColumn(
-                        thumbnail_image_url='https://example.com/image.jpg',
-                        title='其他功能',
-                        text='Please select',
-                        actions=[
-                            MessageTemplateAction(
-                                label='宵夜',
-                                text='midnight'
-                            ),
-                            MessageTemplateAction(
+            template=TemplateSendMessage(
+                alt_text='目錄 template',
+                template=ImageCarouselTemplate(
+                    columns=[
+                        ImageCarouselColumn(
+                            image_url='https://example.com/image.jpg',
+                            action=PostbackTemplateAction(
+                                label="想吃吃！",
+                                text='想吃吃！',
+                                #data='action=buy&itemid=1'
+                            )
+                        ),
+                        ImageCarouselColumn(
+                            image_url='https://example.com/image.jpg',
+                            action=PostbackTemplateAction(
                                 label='新增/刪除店家列表',
-                                text='新增/刪除店家列表'
-                            ),
-                        ]
-                    )
+                                text='新增/刪除店家列表',
+                                #data='action=buy&itemid=2'
+                            )
+                        ),
+                        ImageCarouselColumn(
+                            image_url='https://example.com/image.jpg',
+                            action=PostbackTemplateAction(
+                                label='查詢店家資訊！',
+                                text='查詢店家資訊！',
+                                #data='action=buy&itemid=2'
+                            )
+                        )
+                    ]
+                )
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+        
+    def is_going_to_wanteat(self, event):
+        text = event.message.text
+        print(text)
+        return text.lower() == "start"
+
+    def on_enter_wanteat(self, event):
+        print("I'm entering wanteat")
+        global store_choosed, randold, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
+
+        multi_user_store_choosed[multi_user_id.index(user_id)] = ""
+        multi_user_randold[multi_user_id.index(user_id)] = [-1]
+        
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                thumbnail_image_url='https://example.com/image.jpg',
+                title='想吃什麼呢？',
+                text='點選後將隨機推薦店家！',
+                actions=[
+                    MessageTemplateAction(
+                        label='早餐',
+                        text='breakfast'
+                    ),
+                    MessageTemplateAction(
+                        label='午餐',
+                        text='lunch'
+                    ),
+                    MessageTemplateAction(
+                        label='晚餐',
+                        text='dinner'
+                    ),
+                    MessageTemplateAction(
+                        label='宵夜',
+                        text='midnight'
+                    ),
                 ]
             )
         )
-
-        # message = TemplateSendMessage(
-        #     alt_text='Buttons template',
-        #     template=ButtonsTemplate(
-        #         thumbnail_image_url='https://example.com/image.jpg',
-        #         title='想吃什麼呢？',
-        #         text='點選後將隨機推薦店家！',
-        #         actions=[
-        #             MessageTemplateAction(
-        #                 label='早餐',
-        #                 text='breakfast'
-        #             ),
-        #             MessageTemplateAction(
-        #                 label='午餐',
-        #                 text='lunch'
-        #             ),
-        #             MessageTemplateAction(
-        #                 label='晚餐',
-        #                 text='dinner'
-        #             ),
-        #             MessageTemplateAction(
-        #                 label='宵夜',
-        #                 text='midnight'
-        #             ),
-        #             MessageTemplateAction(
-        #                 label='新增/刪除店家列表',
-        #                 text='新增/刪除店家列表'
-        #             ),
-        #         ]
-        #     )
-        # )
         line_bot_api.reply_message(event.reply_token, message)
         #self.go_back()
 

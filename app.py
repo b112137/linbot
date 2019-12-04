@@ -137,6 +137,7 @@ def webhook_handler():
     if(check_exist == 0):
         multi_user_id.append(user_id)
         multi_user_machine.append(TocMachine(states=["user",
+            "feature"
             "wanteat",
             "breakfast",
             "lunch",
@@ -156,6 +157,12 @@ def webhook_handler():
             {
                 "trigger": "advance",
                 "source": "user",
+                "dest": "feature",
+                "conditions": "is_going_to_feature",
+            },
+            {
+                "trigger": "advance",
+                "source": "feature",
                 "dest": "wanteat",
                 "conditions": "is_going_to_wanteat",
             },
@@ -191,7 +198,7 @@ def webhook_handler():
             },
             {
                 "trigger": "advance",
-                "source": "wanteat",
+                "source": "feature",
                 "dest": "arrange_store",
                 "conditions": "is_going_to_arrange_store",
             },
