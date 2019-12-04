@@ -32,6 +32,7 @@ multi_user_store_choosed = []
 multi_user_randold = []
 rand = -1
 arrange_type = -1
+want_add_text = ""
 
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
@@ -478,4 +479,64 @@ class TocMachine(GraphMachine):
         message = "請輸入完整店家名稱\n(需在以上店家列表內)\n\n輸入\"回到主選單\"返回主選單"
         send_text_message(event.reply_token, message)
         
+    def is_going_to_add_condition(self, event):
+        global want_add_text
+        want_add_text = event.message.text
+        result = True
+        return result
+
+    def on_enter_add_condition(self, event):
+        print("I'm entering add_store")
         
+        user_id = event.source.user_id
+        add_check = 0
+
+        if(arrange_type == 1):
+            for i in range(0,len(multi_user_breakfast[multi_user_id.index(user_id)])):
+                if(want_add_text == multi_user_breakfast[multi_user_id.index(user_id)][i]):
+                    add_check = 1
+        elif(arrange_type == 2):
+            for i in range(0,len(multi_user_lunch[multi_user_id.index(user_id)])):
+                if(want_add_text == multi_user_lunch[multi_user_id.index(user_id)][i]):
+                    add_check = 1
+        elif(arrange_type == 3):
+            for i in range(0,len(multi_user_dinner[multi_user_id.index(user_id)])):
+                if(want_add_text == multi_user_dinner[multi_user_id.index(user_id)][i]):
+                    add_check = 1
+        elif(arrange_type == 4):
+            for i in range(0,len(multi_user_midnight[multi_user_id.index(user_id)])):
+                if(want_add_text == multi_user_midnight[multi_user_id.index(user_id)][i]):
+                    add_check = 1
+
+        if(add_check == 1):
+            message = "此店家已存在列表內，請重新輸入！"
+            send_text_message(event.reply_token, message)
+        else:
+            message = search_message(want_add_text)
+            template_message = TemplateSendMessage(
+                alt_text='目錄 template',
+                template = ConfirmTemplate(
+                    title= "是否加入\"" + want_add_text + "\"至店家列表？",
+                    text='請確認上述店家資訊',
+                    actions=[                              
+                        MessageTemplateAction(
+                            label='是',
+                            text='是',
+                        ),
+                        MessageTemplateAction(
+                            label='否',
+                            text='否'
+                        )
+                    ]
+                )
+            )
+            send_text_message(event.reply_token, message)
+            line_bot_api.push_message(user_id, template_message)
+
+# if(arrange_type == 1):
+            
+# elif(arrange_type == 2):
+            
+# elif(arrange_type == 3):
+            
+# elif(arrange_type == 4):
