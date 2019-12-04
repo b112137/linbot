@@ -428,6 +428,7 @@ class TocMachine(GraphMachine):
             message = message + "你的宵夜店家列表如下：\n"
             for i in range(0,len(multi_user_midnight[multi_user_id.index(user_id)])):
                 message = message + multi_user_midnight[multi_user_id.index(user_id)][i] + "\n"
+        message = message + "輸入\"回到主選單\"返回主選單"
 
         template_message = TemplateSendMessage(
             alt_text='目錄 template',
@@ -449,5 +450,32 @@ class TocMachine(GraphMachine):
         send_text_message(event.reply_token, message)
         line_bot_api.push_message(user_id, template_message)
         
+    def is_going_to_add_store(self, event):
+        global arrange_type
+        text = event.message.text
+        result = False
+        if(text == "新增店家"):
+            result = True
+        return result
+
+    def on_enter_add_store(self, event):
+        print("I'm entering add_store")
+
+        message = "請輸入店家名稱\n名稱格式：\"店名 區域、路名、分店名稱\"\n範例一：麥當勞 台南大學店\n範例二：路易莎 台南勝利路\n範例三：職人雙饗丼 育樂\n\n輸入\"回到主選單\"返回主選單"
+        send_text_message(event.reply_token, message)
+
+    def is_going_to_delete_store(self, event):
+        global arrange_type
+        text = event.message.text
+        result = False
+        if(text == "刪除店家"):
+            result = True
+        return result
+
+    def on_enter_delete_store(self, event):
+        print("I'm entering delete_store")
+
+        message = "請輸入完整店家名稱\n(需在以上店家列表內)\n\n輸入\"回到主選單\"返回主選單"
+        send_text_message(event.reply_token, message)
         
         
