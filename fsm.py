@@ -86,7 +86,7 @@ class TocMachine(GraphMachine):
                     columns=[
                         ImageCarouselColumn(
                             image_url='https://example.com/image.jpg',
-                            action=PostbackTemplateAction(
+                            action=MessageTemplateAction(
                                 label="想吃吃！",
                                 text='想吃吃！',
                                 #data='action=buy&itemid=1'
@@ -94,7 +94,7 @@ class TocMachine(GraphMachine):
                         ),
                         ImageCarouselColumn(
                             image_url='https://example.com/image.jpg',
-                            action=PostbackTemplateAction(
+                            action=MessageTemplateAction(
                                 label='新增/刪除店家列表',
                                 text='新增/刪除店家列表',
                                 #data='action=buy&itemid=2'
@@ -102,7 +102,7 @@ class TocMachine(GraphMachine):
                         ),
                         ImageCarouselColumn(
                             image_url='https://example.com/image.jpg',
-                            action=PostbackTemplateAction(
+                            action=MessageTemplateAction(
                                 label='查詢店家資訊！',
                                 text='查詢店家資訊！',
                                 #data='action=buy&itemid=2'
