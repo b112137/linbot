@@ -44,7 +44,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_feature(self, event):
         print("I'm entering feature")
-        global store_choosed, randold, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
+        global multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
         
         check_exist = 0
         user_id = event.source.user_id
@@ -117,11 +117,11 @@ class TocMachine(GraphMachine):
     def is_going_to_wanteat(self, event):
         text = event.message.text
         print(text)
-        return text.lower() == "start"
+        return text.lower() == "想吃吃！"
 
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
-        global store_choosed, randold, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
+        global multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
 
         user_id = event.source.user_id
 
