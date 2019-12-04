@@ -410,24 +410,24 @@ class TocMachine(GraphMachine):
         print("I'm entering arrange_type")
 
         user_id = event.source.user_id
-        message = "123"
+        message = ""
 
-        # if(arrange_type == 1):
-        #     message = message + "你的早餐店家列表如下：\n"
-        #     for i in range(0,len(multi_user_breakfast[multi_user_id.index(user_id)])):
-        #         message = message + multi_user_breakfast[multi_user_id.index(user_id)][i] + "\n"
-        # elif(arrange_type == 2):
-        #     message = message + "你的午餐店家列表如下：\n"
-        #     for i in range(0,len(multi_user_lunch[multi_user_id.index(user_id)])):
-        #         message = message + multi_user_lunch[multi_user_id.index(user_id)][i] + "\n"
-        # elif(arrange_type == 3):
-        #     message = message + "你的晚餐店家列表如下：\n"
-        #     for i in range(0,len(multi_user_dinner[multi_user_id.index(user_id)])):
-        #         message = message + multi_user_dinner[multi_user_id.index(user_id)][i] + "\n"
-        # elif(arrange_type == 4):
-        #     message = message + "你的宵夜店家列表如下：\n"
-        #     for i in range(0,len(multi_user_midnight[multi_user_id.index(user_id)])):
-        #         message = message + multi_user_midnight[multi_user_id.index(user_id)][i] + "\n"
+        if(arrange_type == 1):
+            message = message + "你的早餐店家列表如下：\n"
+            for i in range(0,len(multi_user_breakfast[multi_user_id.index(user_id)])):
+                message = message + multi_user_breakfast[multi_user_id.index(user_id)][i] + "\n"
+        elif(arrange_type == 2):
+            message = message + "你的午餐店家列表如下：\n"
+            for i in range(0,len(multi_user_lunch[multi_user_id.index(user_id)])):
+                message = message + multi_user_lunch[multi_user_id.index(user_id)][i] + "\n"
+        elif(arrange_type == 3):
+            message = message + "你的晚餐店家列表如下：\n"
+            for i in range(0,len(multi_user_dinner[multi_user_id.index(user_id)])):
+                message = message + multi_user_dinner[multi_user_id.index(user_id)][i] + "\n"
+        elif(arrange_type == 4):
+            message = message + "你的宵夜店家列表如下：\n"
+            for i in range(0,len(multi_user_midnight[multi_user_id.index(user_id)])):
+                message = message + multi_user_midnight[multi_user_id.index(user_id)][i] + "\n"
 
         template_message = TemplateSendMessage(
             alt_text='目錄 template',
@@ -446,7 +446,7 @@ class TocMachine(GraphMachine):
                 ]
             )
         )
-        line_bot_api.reply_message(event.reply_token, message)
+        send_text_message(event.reply_token, message)
         line_bot_api.push_message(user_id, template_message)
         
         
