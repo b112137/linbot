@@ -122,8 +122,10 @@ class TocMachine(GraphMachine):
         while(rand_repeat):
             if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_breakfast[multi_user_id.index(user_id)])):
                 temp_rand = [multi_user_randold[multi_user_id.index(user_id)][len(multi_user_randold[multi_user_id.index(user_id)])-1]]
+                print(temp_rand)
                 multi_user_randold[multi_user_id.index(user_id)] = []
                 multi_user_randold[multi_user_id.index(user_id)].append(temp_rand)
+                print(multi_user_randold[multi_user_id.index(user_id)])
             rand = random.randint(0,len(multi_user_breakfast[multi_user_id.index(user_id)])-1)
             for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
                 if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
