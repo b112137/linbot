@@ -15,61 +15,61 @@ load_dotenv()
 multi_user_id = []
 multi_user_machine = []
 
-# machine = TocMachine(
-#     states=["user",
-#             "wanteat",
-#             "breakfast",
-#             "lunch",
-#             "dinner",
-#             "midnight",
-#             "place"],
-#     transitions=[
-#         {
-#             "trigger": "advance",
-#             "source": "user",
-#             "dest": "wanteat",
-#             "conditions": "is_going_to_wanteat",
-#         },
-#         {
-#             "trigger": "advance",
-#             "source": ["wanteat","breakfast"],
-#             "dest": "breakfast",
-#             "conditions": "is_going_to_breakfast",
-#         },
-#         {
-#             "trigger": "advance",
-#             "source": ["wanteat", "lunch"],
-#             "dest": "lunch",
-#             "conditions": "is_going_to_lunch",
-#         },
-#         {
-#             "trigger": "advance",
-#             "source": ["wanteat", "dinner"],
-#             "dest": "dinner",
-#             "conditions": "is_going_to_dinner",
-#         },
-#         {
-#             "trigger": "advance",
-#             "source": ["wanteat", "midnight"],
-#             "dest": "midnight",
-#             "conditions": "is_going_to_midnight",
-#         },
-#         {
-#             "trigger": "advance",
-#             "source": ["breakfast", "lunch", "dinner", "midnight"],
-#             "dest": "place",
-#             "conditions": "is_going_to_place",
-#         },
-#         {
-#             "trigger": "go_back", 
-#             "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
-#             "dest": "user",
-#         },
-#     ],
-#     initial="user",
-#     auto_transitions=False,
-#     show_conditions=True,
-# )
+machine = TocMachine(
+    states=["user",
+            "wanteat",
+            "breakfast",
+            "lunch",
+            "dinner",
+            "midnight",
+            "place"],
+    transitions=[
+        {
+            "trigger": "advance",
+            "source": "user",
+            "dest": "wanteat",
+            "conditions": "is_going_to_wanteat",
+        },
+        {
+            "trigger": "advance",
+            "source": ["wanteat","breakfast"],
+            "dest": "breakfast",
+            "conditions": "is_going_to_breakfast",
+        },
+        {
+            "trigger": "advance",
+            "source": ["wanteat", "lunch"],
+            "dest": "lunch",
+            "conditions": "is_going_to_lunch",
+        },
+        {
+            "trigger": "advance",
+            "source": ["wanteat", "dinner"],
+            "dest": "dinner",
+            "conditions": "is_going_to_dinner",
+        },
+        {
+            "trigger": "advance",
+            "source": ["wanteat", "midnight"],
+            "dest": "midnight",
+            "conditions": "is_going_to_midnight",
+        },
+        {
+            "trigger": "advance",
+            "source": ["breakfast", "lunch", "dinner", "midnight"],
+            "dest": "place",
+            "conditions": "is_going_to_place",
+        },
+        {
+            "trigger": "go_back", 
+            "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
+            "dest": "user",
+        },
+    ],
+    initial="user",
+    auto_transitions=False,
+    show_conditions=True,
+)
 
 app = Flask(__name__, static_url_path="")
 
@@ -77,6 +77,8 @@ app = Flask(__name__, static_url_path="")
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv("LINE_CHANNEL_SECRET", None)
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
+channel_access_token = str(channel_access_token)
+
 if channel_secret is None:
     print("Specify LINE_CHANNEL_SECRET as environment variable.")
     sys.exit(1)
@@ -152,11 +154,18 @@ def webhook_handler():
             "add_no",
             "delete_store",
             "delete_condition",
-            "arrange_ok"],
+            "search_store",
+            "search_condition"],
         transitions=[
             {
                 "trigger": "advance",
                 "source": "user",
+                "dest": "feature",
+                "conditions": "is_going_to_feature",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "arrange_store", "arrange_type", "add_store", "add_condition", "delete_store", "search_store"],
                 "dest": "feature",
                 "conditions": "is_going_to_feature",
             },
@@ -252,9 +261,15 @@ def webhook_handler():
             },
             {
                 "trigger": "advance",
-                "source": ["add_store", "delete_store"],
-                "dest": "arrange_ok",
-                "conditions": "is_going_to_arrange_ok",
+                "source": "feature",
+                "dest": "search_store",
+                "conditions": "is_going_to_search_store",
+            },
+            {
+                "trigger": "advance",
+                "source": "search_store",
+                "dest": "search_condition",
+                "conditions": "is_going_to_search_condition",
             },
             {
                 "trigger": "go_back", 
@@ -268,8 +283,13 @@ def webhook_handler():
             },
             {
                 "trigger": "go_back", 
-                "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place", "arrange_ok"], 
-                "dest": "user",
+                "source": "search_condition", 
+                "dest": "search_store",
+            },
+            {
+                "trigger": "go_back", 
+                "source": "place", 
+                "dest": "feature",
             },
         ],
         initial="user",

@@ -63,10 +63,10 @@ def search_message(store_name):
         except:
             store_price = "Not Found"
             
-        try:
-            store_website = detail_results["result"]["website"]
-        except:
-            store_website = "Not Found"
+        # try:
+        #     store_website = detail_results["result"]["website"]
+        # except:
+        #     store_website = "Not Found"
         
         try:
             lat = detail_results["result"]["geometry"]["location"]["lat"]
@@ -96,3 +96,24 @@ def search_photo(store_name):
         photo_url = "https://www.bomb01.com/upload/news/original/c95e0d21eda50ebc16d5f8ef568f60a7.png"
 
     return photo_url
+
+def search_address(store_name):
+    address = store_name
+    addurl = "https://maps.googleapis.com/maps/api/geocode/json?key={}&address={}&sensor=false".format(google_key,address)
+    addressReq = requests.get(addurl)
+    addressDoc = addressReq.json()
+
+    try:
+        place_id = addressDoc["results"][0]["place_id"]
+        detail_results = gmaps.place(place_id, language = "zh-tw")
+
+        message = ""
+        try:
+            store_address = detail_results["result"]["formatted_address"]
+        except:
+            store_address = "Not Found"
+        message = store_address
+    except:
+        message = "Not Found"
+    
+    return message
