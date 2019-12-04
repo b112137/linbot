@@ -15,61 +15,61 @@ load_dotenv()
 multi_user_id = []
 multi_user_machine = []
 
-machine = TocMachine(
-    states=["user",
-            "wanteat",
-            "breakfast",
-            "lunch",
-            "dinner",
-            "midnight",
-            "place"],
-    transitions=[
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "wanteat",
-            "conditions": "is_going_to_wanteat",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat","breakfast"],
-            "dest": "breakfast",
-            "conditions": "is_going_to_breakfast",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "lunch"],
-            "dest": "lunch",
-            "conditions": "is_going_to_lunch",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "dinner"],
-            "dest": "dinner",
-            "conditions": "is_going_to_dinner",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "midnight"],
-            "dest": "midnight",
-            "conditions": "is_going_to_midnight",
-        },
-        {
-            "trigger": "advance",
-            "source": ["breakfast", "lunch", "dinner", "midnight"],
-            "dest": "place",
-            "conditions": "is_going_to_place",
-        },
-        {
-            "trigger": "go_back", 
-            "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
-            "dest": "user",
-        },
-    ],
-    initial="user",
-    auto_transitions=False,
-    show_conditions=True,
-)
+# machine = TocMachine(
+#     states=["user",
+#             "wanteat",
+#             "breakfast",
+#             "lunch",
+#             "dinner",
+#             "midnight",
+#             "place"],
+#     transitions=[
+#         {
+#             "trigger": "advance",
+#             "source": "user",
+#             "dest": "wanteat",
+#             "conditions": "is_going_to_wanteat",
+#         },
+#         {
+#             "trigger": "advance",
+#             "source": ["wanteat","breakfast"],
+#             "dest": "breakfast",
+#             "conditions": "is_going_to_breakfast",
+#         },
+#         {
+#             "trigger": "advance",
+#             "source": ["wanteat", "lunch"],
+#             "dest": "lunch",
+#             "conditions": "is_going_to_lunch",
+#         },
+#         {
+#             "trigger": "advance",
+#             "source": ["wanteat", "dinner"],
+#             "dest": "dinner",
+#             "conditions": "is_going_to_dinner",
+#         },
+#         {
+#             "trigger": "advance",
+#             "source": ["wanteat", "midnight"],
+#             "dest": "midnight",
+#             "conditions": "is_going_to_midnight",
+#         },
+#         {
+#             "trigger": "advance",
+#             "source": ["breakfast", "lunch", "dinner", "midnight"],
+#             "dest": "place",
+#             "conditions": "is_going_to_place",
+#         },
+#         {
+#             "trigger": "go_back", 
+#             "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
+#             "dest": "user",
+#         },
+#     ],
+#     initial="user",
+#     auto_transitions=False,
+#     show_conditions=True,
+# )
 
 app = Flask(__name__, static_url_path="")
 
@@ -142,7 +142,16 @@ def webhook_handler():
             "lunch",
             "dinner",
             "midnight",
-            "place"],
+            "place",
+            "arrange_store",
+            "arrange_type",
+            "add_store",
+            "add_condition",
+            "add_yes",
+            "add_no",
+            "delete_store",
+            "delete_condition",
+            "arrange_ok"],
         transitions=[
             {
                 "trigger": "advance",
@@ -181,8 +190,72 @@ def webhook_handler():
                 "conditions": "is_going_to_place",
             },
             {
+                "trigger": "advance",
+                "source": "wanteat",
+                "dest": "arrange_store",
+                "conditions": "is_going_to_arrange_store",
+            },
+            {
+                "trigger": "advance",
+                "source": "arrange_type",
+                "dest": "add_store",
+                "conditions": "is_going_to_arrange_type",
+            },
+            {
+                "trigger": "advance",
+                "source": "arrange_type",
+                "dest": "add_store",
+                "conditions": "is_going_to_add_store",
+            },
+            {
+                "trigger": "advance",
+                "source": "add_store",
+                "dest": "add_condition",
+                "conditions": "is_going_to_add_condition",
+            },
+            {
+                "trigger": "advance",
+                "source": "add_condition",
+                "dest": "add_yes",
+                "conditions": "is_going_to_add_yes",
+            },
+            {
+                "trigger": "advance",
+                "source": "add_condition",
+                "dest": "add_no",
+                "conditions": "is_going_to_add_no",
+            },
+            {
+                "trigger": "advance",
+                "source": "arrange_type",
+                "dest": "delete_store",
+                "conditions": "is_going_to_delete_store",
+            },
+            {
+                "trigger": "advance",
+                "source": "delete_store",
+                "dest": "delete_condition",
+                "conditions": "is_going_to_delete_condition",
+            },
+            {
+                "trigger": "advance",
+                "source": ["add_store", "delete_store"],
+                "dest": "arrange_ok",
+                "conditions": "is_going_to_arrange_ok",
+            },
+            {
                 "trigger": "go_back", 
-                "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
+                "source": ["add_condition","add_yes", "add_no"], 
+                "dest": "add_store",
+            },
+            {
+                "trigger": "go_back", 
+                "source": "delete_condition", 
+                "dest": "delete_store",
+            },
+            {
+                "trigger": "go_back", 
+                "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place", "arrange_ok"], 
                 "dest": "user",
             },
         ],

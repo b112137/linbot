@@ -31,6 +31,7 @@ multi_user_midnight = []
 multi_user_store_choosed = []
 multi_user_randold = []
 rand = -1
+arrange_type = -1
 
 class TocMachine(GraphMachine):
     def __init__(self, **machine_configs):
@@ -101,6 +102,10 @@ class TocMachine(GraphMachine):
                     MessageTemplateAction(
                         label='宵夜',
                         text='midnight'
+                    ),
+                    MessageTemplateAction(
+                        label='新增/刪除店家列表',
+                        text='新增/刪除店家列表'
                     ),
                 ]
             )
@@ -307,9 +312,102 @@ class TocMachine(GraphMachine):
         send_text_message(reply_token, message)
         self.go_back()
     
+    def is_going_to_arrange_store(self, event):
+        text = event.message.text
+        return text.lower() == "新增/刪除店家列表"
 
+    def on_enter_arrange_store(self, event):
+        print("I'm entering arrange_store")
+
+        user_id = event.source.user_id
     
+        message = TemplateSendMessage(
+            alt_text='Buttons template',
+            template=ButtonsTemplate(
+                #thumbnail_image_url = store_photo,
+                title = "請選擇欲新增/刪除的店家分類",
+                text='Please select',
+                actions=[
+                    MessageTemplateAction(
+                        label='早餐',
+                        text='早餐'
+                    ),
+                    MessageTemplateAction(
+                        label='午餐',
+                        text='午餐'
+                    ),
+                    MessageTemplateAction(
+                        label='晚餐',
+                        text='晚餐'
+                    ),
+                    MessageTemplateAction(
+                        label='宵夜',
+                        text='宵夜'
+                    ),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token, message)
 
+    def is_going_to_arrange_type(self, event):
+        text = event.message.text
+        result = False
+        if(text.lower() == "早餐"):
+            arrange_type = 1
+            result = True
+        elif(text.lower() == "午餐"):
+            arrange_type = 2
+            result = True
+        elif(text.lower() == "晚餐"):
+            arrange_type = 3
+            result = True
+        elif(text.lower() == "宵夜"):
+            arrange_type = 4
+            result = True
+        return result
+
+    def on_enter_arrange_type(self, event):
+        print("I'm entering arrange_type")
+
+        user_id = event.source.user_id
+        message = ""
+
+        if(arrange_type == 1):
+            message = message + "你的早餐店家列表如下：\n"
+            for store in multi_user_breakfast[multi_user_id.index(user_id)]:
+                message = message + store + "\n"
+        elif(arrange_type == 2):
+            message = message + "你的午餐店家列表如下：\n"
+            for store in multi_user_lunch[multi_user_id.index(user_id)]:
+                message = message + store + "\n"
+        elif(arrange_type == 3):
+            message = message + "你的晚餐店家列表如下：\n"
+            for store in multi_user_dinner[multi_user_id.index(user_id)]:
+                message = message + store + "\n"
+        elif(arrange_type == 4):
+            message = message + "你的宵夜店家列表如下：\n"
+            for store in multi_user_midnight[multi_user_id.index(user_id)]:
+                message = message + store + "\n"
+
+        line_bot_api.push_message(user_id, message)
+        
+        message = TemplateSendMessage(
+        alt_text='目錄 template',
+        template = ConfirmTemplate(
+            title='新增/刪除店家列表',
+            text='Please select',
+            actions=[                              
+                MessageTemplateAction(
+                    label='新增店家',
+                    text='新增店家',
+                ),
+                MessageTemplateAction(
+                    label='刪除店家',
+                    text='刪除店家'
+                )
+            ]
+        )
+        line_bot_api.reply_message(event.reply_token, message)
 
 
 
