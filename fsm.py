@@ -389,55 +389,25 @@ class TocMachine(GraphMachine):
             for store in multi_user_midnight[multi_user_id.index(user_id)]:
                 message = message + store + "\n"
 
-        line_bot_api.push_message(user_id, message)
-        
-        message = TemplateSendMessage(
-        alt_text='目錄 template',
-        template = ConfirmTemplate(
-            title='新增/刪除店家列表',
-            text='Please select',
-            actions=[                              
-                MessageTemplateAction(
-                    label='新增店家',
-                    text='新增店家',
-                ),
-                MessageTemplateAction(
-                    label='刪除店家',
-                    text='刪除店家'
-                )
-            ]
+        template_message = TemplateSendMessage(
+            alt_text='目錄 template',
+            template = ConfirmTemplate(
+                title='新增/刪除店家列表',
+                text='Please select',
+                actions=[                              
+                    MessageTemplateAction(
+                        label='新增店家',
+                        text='新增店家',
+                    ),
+                    MessageTemplateAction(
+                        label='刪除店家',
+                        text='刪除店家'
+                    )
+                ]
+            )
         )
         line_bot_api.reply_message(event.reply_token, message)
-
-
-
-
-
-
-
-
-
-
-
-    # def on_enter_state2(self, event):
-    #     print("I'm entering state2")
-
-    #     reply_token = event.reply_token
-    #     send_text_message(reply_token, "Trigger state2")
-    #     self.go_back()
-
-    # def on_exit_state2(self):
-    #     print("Leaving state2")
-
-    # def on_enter_state3(self, event):
-    #     print("I'm entering state3")
-
-    #     reply_token = event.reply_token
-    #     send_text_message(reply_token, "Trigger state3")
-    #     self.go_back()
-
-    # def on_exit_state3(self):
-    #     print("Leaving state3")
-
-
+        line_bot_api.push_message(user_id, template_message)
+        
+        
         
