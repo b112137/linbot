@@ -153,7 +153,6 @@ class TocMachine(GraphMachine):
             )
         )
         line_bot_api.reply_message(event.reply_token, message)
-        #self.go_back()
 
     def is_going_to_breakfast(self, event):
         text = event.message.text
