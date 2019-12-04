@@ -85,7 +85,7 @@ class TocMachine(GraphMachine):
             template=CarouselTemplate(
                 columns=[
                     CarouselColumn(
-                        thumbnail_image_url='',
+                        thumbnail_image_url='https://example.com/image.jpg',
                         title='想吃什麼呢？',
                         text='點選後將隨機推薦店家！',
                         actions=[
@@ -108,7 +108,7 @@ class TocMachine(GraphMachine):
                         ]
                     ),
                     CarouselColumn(
-                        thumbnail_image_url='',
+                        thumbnail_image_url='https://example.com/image.jpg',
                         title='其他功能',
                         text='Please select',
                         actions=[
