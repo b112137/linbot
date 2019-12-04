@@ -462,8 +462,10 @@ class TocMachine(GraphMachine):
     def on_enter_add_store(self, event):
         print("I'm entering add_store")
 
+        user_id = event.source.user_id
+
         message = "請輸入店家名稱\n名稱格式：\"店名 區域、路名、分店名稱\"\n範例一：麥當勞 台南大學店\n範例二：路易莎 台南勝利路\n範例三：職人雙饗丼 育樂\n\n輸入\"回到主選單\"返回主選單"
-        send_text_message(event.reply_token, message)
+        line_bot_api.push_message(user_id, TextSendMessage(text=message))
 
     def is_going_to_delete_store(self, event):
         global arrange_type
