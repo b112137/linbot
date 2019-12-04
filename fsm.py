@@ -28,8 +28,8 @@ multi_user_lunch = []
 multi_user_dinner = []
 multi_user_midnight = []
 
-store_choosed = ""
-randold = [-1]
+multi_user_store_choosed = []
+multi_user_randold = []
 rand = -1
 
 class TocMachine(GraphMachine):
@@ -43,7 +43,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
-        global store_choosed, randold, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight
+        global store_choosed, randold, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
         
         check_exist = 0
         user_id = event.source.user_id
@@ -57,6 +57,8 @@ class TocMachine(GraphMachine):
             multi_user_lunch.append([])
             multi_user_dinner.append([])
             multi_user_midnight.append([])
+            multi_user_randold.append([-1])
+            multi_user_store_choosed.append("")
 
         multi_user_breakfast[multi_user_id.index(user_id)] = []
         multi_user_lunch[multi_user_id.index(user_id)] = []
@@ -75,8 +77,8 @@ class TocMachine(GraphMachine):
                 if(sheet_dic[i]["midnight"] != 0):
                     multi_user_midnight[multi_user_id.index(user_id)].append(sheet_dic[i]["midnight"])
 
-        store_choosed = ""
-        randold = [-1]
+        multi_user_store_choosed[multi_user_id.index(user_id)] = ""
+        multi_user_randold[multi_user_id.index(user_id)] = [-1]
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
@@ -112,30 +114,30 @@ class TocMachine(GraphMachine):
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
-        global rand, randold, store_choosed
+        global rand, multi_user_randold, multi_user_store_choosed
 
         user_id = event.source.user_id
 
         rand_repeat = 1
         while(rand_repeat):
-            if(len(randold) > len(multi_user_breakfast[multi_user_id.index(user_id)])):
-                randold = [-1]
+            if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_breakfast[multi_user_id.index(user_id)])):
+                multi_user_randold[multi_user_id.index(user_id)] = [-1]
             rand = random.randint(0,len(multi_user_breakfast[multi_user_id.index(user_id)])-1)
-            for i in range(0,len(randold)):
-                if(rand == randold[i]):
+            for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
+                if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
                     rand_repeat = 1
                     break
                 else:
                     rand_repeat = 0
-        randold.append(rand)
-        store_choosed = multi_user_breakfast[multi_user_id.index(user_id)][rand]
-        store_photo = search_photo(store_choosed)
+        multi_user_randold[multi_user_id.index(user_id)].append(rand)
+        multi_user_store_choosed[multi_user_id.index(user_id)] = multi_user_breakfast[multi_user_id.index(user_id)][rand]
+        store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
         # reply_token = event.reply_token
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url = store_photo,
-                title = store_choosed,
+                title = multi_user_store_choosed[multi_user_id.index(user_id)],
                 text = 'Please select',
                 actions=[
                     MessageTemplateAction(
@@ -158,30 +160,30 @@ class TocMachine(GraphMachine):
 
     def on_enter_lunch(self, event):
         print("I'm entering lunch")
-        global rand, randold, store_choosed
+        global rand, multi_user_randold, multi_user_store_choosed
         
         user_id = event.source.user_id
 
         rand_repeat = 1
         while(rand_repeat):
-            if(len(randold) > len(multi_user_lunch[multi_user_id.index(user_id)])):
-                randold = [-1]
+            if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_lunch[multi_user_id.index(user_id)])):
+                multi_user_randold[multi_user_id.index(user_id)] = [-1]
             rand = random.randint(0,len(multi_user_lunch[multi_user_id.index(user_id)])-1)
-            for i in range(0,len(randold)):
-                if(rand == randold[i]):
+            for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
+                if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
                     rand_repeat = 1
                     break
                 else:
                     rand_repeat = 0
-        randold.append(rand)
-        store_choosed = multi_user_lunch[multi_user_id.index(user_id)][rand]
-        store_photo = search_photo(store_choosed)
+        multi_user_randold[multi_user_id.index(user_id)].append(rand)
+        multi_user_store_choosed[multi_user_id.index(user_id)] = multi_user_lunch[multi_user_id.index(user_id)][rand]
+        store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
 
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url = store_photo,
-                title = store_choosed,
+                title = multi_user_store_choosed[multi_user_id.index(user_id)],
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
@@ -203,30 +205,30 @@ class TocMachine(GraphMachine):
 
     def on_enter_dinner(self, event):
         print("I'm entering dinner")
-        global rand, randold, store_choosed
+        global rand, multi_user_randold, multi_user_store_choosed
         
         user_id = event.source.user_id
 
         rand_repeat = 1
         while(rand_repeat):
-            if(len(randold) > len(multi_user_dinner[multi_user_id.index(user_id)])):
-                randold = [-1]
+            if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_dinner[multi_user_id.index(user_id)])):
+                multi_user_randold[multi_user_id.index(user_id)] = [-1]
             rand = random.randint(0,len(multi_user_dinner[multi_user_id.index(user_id)])-1)
-            for i in range(0,len(randold)):
-                if(rand == randold[i]):
+            for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
+                if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
                     rand_repeat = 1
                     break
                 else:
                     rand_repeat = 0
-        randold.append(rand)
-        store_choosed = multi_user_dinner[multi_user_id.index(user_id)][rand]
-        store_photo = search_photo(store_choosed)
+        multi_user_randold[multi_user_id.index(user_id)].append(rand)
+        multi_user_store_choosed[multi_user_id.index(user_id)] = multi_user_dinner[multi_user_id.index(user_id)][rand]
+        store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
 
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url = store_photo,
-                title = store_choosed,
+                title = multi_user_store_choosed[multi_user_id.index(user_id)],
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
@@ -248,30 +250,30 @@ class TocMachine(GraphMachine):
 
     def on_enter_midnight(self, event):
         print("I'm entering midnight")
-        global rand, randold, store_choosed
+        global rand, multi_user_randold, multi_user_store_choosed
         
         user_id = event.source.user_id
 
         rand_repeat = 1
         while(rand_repeat):
-            if(len(randold) > len(multi_user_midnight[multi_user_id.index(user_id)])):
-                randold = [-1]
+            if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_midnight[multi_user_id.index(user_id)])):
+                multi_user_randold[multi_user_id.index(user_id)] = [-1]
             rand = random.randint(0,len(multi_user_midnight[multi_user_id.index(user_id)])-1)
-            for i in range(0,len(randold)):
-                if(rand == randold[i]):
+            for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
+                if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
                     rand_repeat = 1
                     break
                 else:
                     rand_repeat = 0
-        randold.append(rand)
-        store_choosed = multi_user_midnight[multi_user_id.index(user_id)][rand]
-        store_photo = search_photo(store_choosed)
+        multi_user_randold[multi_user_id.index(user_id)].append(rand)
+        multi_user_store_choosed[multi_user_id.index(user_id)] = multi_user_midnight[multi_user_id.index(user_id)][rand]
+        store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
 
         message = TemplateSendMessage(
             alt_text='Buttons template',
             template=ButtonsTemplate(
                 thumbnail_image_url = store_photo,
-                title = store_choosed,
+                title = multi_user_store_choosed[multi_user_id.index(user_id)],
                 text='Please select',
                 actions=[
                     MessageTemplateAction(
@@ -293,11 +295,14 @@ class TocMachine(GraphMachine):
 
     def on_enter_place(self, event):
         print("I'm entering place")
-        global store_choosed
-        print(store_choosed)
+        global multi_user_store_choosed
+
+        user_id = event.source.user_id
+
+        print(multi_user_store_choosed[multi_user_id.index(user_id)])
         reply_token = event.reply_token
 
-        message = search_message(store_choosed)
+        message = search_message(multi_user_store_choosed[multi_user_id.index(user_id)])
 
         send_text_message(reply_token, message)
         self.go_back()
