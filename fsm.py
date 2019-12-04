@@ -81,35 +81,81 @@ class TocMachine(GraphMachine):
         multi_user_store_choosed[multi_user_id.index(user_id)] = ""
         multi_user_randold[multi_user_id.index(user_id)] = [-1]
         message = TemplateSendMessage(
-            alt_text='Buttons template',
-            template=ButtonsTemplate(
-                thumbnail_image_url='https://example.com/image.jpg',
-                title='想吃什麼呢？',
-                text='點選後將隨機推薦店家！',
-                actions=[
-                    MessageTemplateAction(
-                        label='早餐',
-                        text='breakfast'
+            alt_text='Carousel template',
+            template=CarouselTemplate(
+                columns=[
+                    CarouselColumn(
+                        thumbnail_image_url='',
+                        title='想吃什麼呢？',
+                        text='點選後將隨機推薦店家！',
+                        actions=[
+                            MessageTemplateAction(
+                                label='早餐',
+                                text='breakfast'
+                            ),
+                            MessageTemplateAction(
+                                label='午餐',
+                                text='lunch'
+                            ),
+                            MessageTemplateAction(
+                                label='晚餐',
+                                text='dinner'
+                            ),
+                            MessageTemplateAction(
+                                label='宵夜',
+                                text='midnight'
+                            ),
+                        ]
                     ),
-                    MessageTemplateAction(
-                        label='午餐',
-                        text='lunch'
-                    ),
-                    MessageTemplateAction(
-                        label='晚餐',
-                        text='dinner'
-                    ),
-                    MessageTemplateAction(
-                        label='宵夜',
-                        text='midnight'
-                    ),
-                    MessageTemplateAction(
-                        label='新增/刪除店家列表',
-                        text='新增/刪除店家列表'
-                    ),
+                    CarouselColumn(
+                        thumbnail_image_url='',
+                        title='其他功能',
+                        text='Please select',
+                        actions=[
+                            MessageTemplateAction(
+                                label='宵夜',
+                                text='midnight'
+                            ),
+                            MessageTemplateAction(
+                                label='新增/刪除店家列表',
+                                text='新增/刪除店家列表'
+                            ),
+                        ]
+                    )
                 ]
             )
         )
+
+        # message = TemplateSendMessage(
+        #     alt_text='Buttons template',
+        #     template=ButtonsTemplate(
+        #         thumbnail_image_url='https://example.com/image.jpg',
+        #         title='想吃什麼呢？',
+        #         text='點選後將隨機推薦店家！',
+        #         actions=[
+        #             MessageTemplateAction(
+        #                 label='早餐',
+        #                 text='breakfast'
+        #             ),
+        #             MessageTemplateAction(
+        #                 label='午餐',
+        #                 text='lunch'
+        #             ),
+        #             MessageTemplateAction(
+        #                 label='晚餐',
+        #                 text='dinner'
+        #             ),
+        #             MessageTemplateAction(
+        #                 label='宵夜',
+        #                 text='midnight'
+        #             ),
+        #             MessageTemplateAction(
+        #                 label='新增/刪除店家列表',
+        #                 text='新增/刪除店家列表'
+        #             ),
+        #         ]
+        #     )
+        # )
         line_bot_api.reply_message(event.reply_token, message)
         #self.go_back()
 
@@ -318,8 +364,6 @@ class TocMachine(GraphMachine):
 
     def on_enter_arrange_store(self, event):
         print("I'm entering arrange_store")
-
-        user_id = event.source.user_id
     
         message = TemplateSendMessage(
             alt_text='Buttons template',
@@ -350,6 +394,7 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_arrange_type(self, event):
+        global arrange_type
         text = event.message.text
         result = False
         if(text.lower() == "早餐"):
