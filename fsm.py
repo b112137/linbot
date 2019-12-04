@@ -511,6 +511,7 @@ class TocMachine(GraphMachine):
         if(add_check == 1):
             message = "此店家已存在列表內，請重新輸入！"
             send_text_message(event.reply_token, message)
+            self.go_back()
         else:
             message = search_message(want_add_text)
             template_message = TemplateSendMessage(
