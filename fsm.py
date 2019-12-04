@@ -80,37 +80,34 @@ class TocMachine(GraphMachine):
 
         message = TemplateSendMessage(
             alt_text='Carousel template',
-            template=TemplateSendMessage(
-                alt_text='目錄 template',
-                template=ImageCarouselTemplate(
-                    columns=[
-                        ImageCarouselColumn(
-                            image_url='https://example.com/image.jpg',
-                            action=MessageTemplateAction(
-                                label="想吃吃！",
-                                text='想吃吃！',
-                                #data='action=buy&itemid=1'
-                            )
-                        ),
-                        ImageCarouselColumn(
-                            image_url='https://example.com/image.jpg',
-                            action=MessageTemplateAction(
-                                label='新增/刪除店家列表',
-                                text='新增/刪除店家列表',
-                                #data='action=buy&itemid=2'
-                            )
-                        ),
-                        ImageCarouselColumn(
-                            image_url='https://example.com/image.jpg',
-                            action=MessageTemplateAction(
-                                label='查詢店家資訊！',
-                                text='查詢店家資訊！',
-                                #data='action=buy&itemid=2'
-                            )
+            template=ImageCarouselTemplate(
+                columns=[
+                    ImageCarouselColumn(
+                        image_url='https://example.com/image.jpg',
+                        action=MessageTemplateAction(
+                            label="想吃吃！",
+                            text='想吃吃！',
+                            #data='action=buy&itemid=1'
                         )
-                    ]
-                )
-            )
+                    ),
+                    ImageCarouselColumn(
+                        image_url='https://example.com/image.jpg',
+                        action=MessageTemplateAction(
+                            label='新增/刪除店家列表',
+                            text='新增/刪除店家列表',
+                            #data='action=buy&itemid=2'
+                        )
+                    ),
+                    ImageCarouselColumn(
+                        image_url='https://example.com/image.jpg',
+                        action=MessageTemplateAction(
+                            label='查詢店家資訊！',
+                            text='查詢店家資訊！',
+                            #data='action=buy&itemid=2'
+                        )
+                    )
+                ]
+            ) 
         )
         line_bot_api.reply_message(event.reply_token, message)
 
