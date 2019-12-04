@@ -113,7 +113,7 @@ class TocMachine(GraphMachine):
             )
         )
         line_bot_api.reply_message(event.reply_token, message)
-        
+
     def is_going_to_wanteat(self, event):
         text = event.message.text
         print(text)
@@ -122,6 +122,8 @@ class TocMachine(GraphMachine):
     def on_enter_wanteat(self, event):
         print("I'm entering wanteat")
         global store_choosed, randold, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
+
+        user_id = event.source.user_id
 
         multi_user_store_choosed[multi_user_id.index(user_id)] = ""
         multi_user_randold[multi_user_id.index(user_id)] = [-1]
