@@ -511,13 +511,13 @@ class TocMachine(GraphMachine):
         if(add_check == 1):
             message = "此店家已存在列表內，請重新輸入！"
             send_text_message(event.reply_token, message)
-            self.go_back()
+            self.go_back(event)
         else:
             message = search_message(want_add_text)
             if(message == "Not Found"):
                 message = "找不到此店家，請重新輸入！"
                 send_text_message(event.reply_token, message)
-                self.go_back()
+                self.go_back(event)
             else:
                 template_message = TemplateSendMessage(
                     alt_text='目錄 template',
