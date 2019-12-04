@@ -121,7 +121,7 @@ class TocMachine(GraphMachine):
         rand_repeat = 1
         while(rand_repeat):
             if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_breakfast[multi_user_id.index(user_id)])):
-                multi_user_randold[multi_user_id.index(user_id)] = [-1]
+                multi_user_randold[multi_user_id.index(user_id)] = [multi_user_randold[multi_user_id.index(user_id)][len(multi_user_randold[multi_user_id.index(user_id)])-1]]
             rand = random.randint(0,len(multi_user_breakfast[multi_user_id.index(user_id)])-1)
             for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
                 if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
@@ -167,7 +167,7 @@ class TocMachine(GraphMachine):
         rand_repeat = 1
         while(rand_repeat):
             if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_lunch[multi_user_id.index(user_id)])):
-                multi_user_randold[multi_user_id.index(user_id)] = [-1]
+                multi_user_randold[multi_user_id.index(user_id)] = [multi_user_randold[multi_user_id.index(user_id)][len(multi_user_randold[multi_user_id.index(user_id)])-1]]
             rand = random.randint(0,len(multi_user_lunch[multi_user_id.index(user_id)])-1)
             for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
                 if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
@@ -212,7 +212,7 @@ class TocMachine(GraphMachine):
         rand_repeat = 1
         while(rand_repeat):
             if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_dinner[multi_user_id.index(user_id)])):
-                multi_user_randold[multi_user_id.index(user_id)] = [-1]
+                multi_user_randold[multi_user_id.index(user_id)] = [multi_user_randold[multi_user_id.index(user_id)][len(multi_user_randold[multi_user_id.index(user_id)])-1]]
             rand = random.randint(0,len(multi_user_dinner[multi_user_id.index(user_id)])-1)
             for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
                 if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
@@ -257,7 +257,7 @@ class TocMachine(GraphMachine):
         rand_repeat = 1
         while(rand_repeat):
             if(len(multi_user_randold[multi_user_id.index(user_id)]) > len(multi_user_midnight[multi_user_id.index(user_id)])):
-                multi_user_randold[multi_user_id.index(user_id)] = [-1]
+                multi_user_randold[multi_user_id.index(user_id)] = [multi_user_randold[multi_user_id.index(user_id)][len(multi_user_randold[multi_user_id.index(user_id)])-1]]
             rand = random.randint(0,len(multi_user_midnight[multi_user_id.index(user_id)])-1)
             for i in range(0,len(multi_user_randold[multi_user_id.index(user_id)])):
                 if(rand == multi_user_randold[multi_user_id.index(user_id)][i]):
