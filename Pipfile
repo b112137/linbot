@@ -14,6 +14,7 @@ Flask = "==1.0.2"
 gspread = "*"
 googlemaps = "*"
 oauth2client = "*"
+graphviz = "*"
 
 [requires]
 python_version = "3.6"

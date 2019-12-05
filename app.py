@@ -10,66 +10,170 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from fsm import TocMachine
 from utils import send_text_message
 
+os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+
 load_dotenv()
 
 multi_user_id = []
 multi_user_machine = []
 
-machine = TocMachine(
-    states=["user",
+machine = TocMachine(states=["user",
+            "feature",
             "wanteat",
             "breakfast",
             "lunch",
             "dinner",
             "midnight",
-            "place"],
-    transitions=[
-        {
-            "trigger": "advance",
-            "source": "user",
-            "dest": "wanteat",
-            "conditions": "is_going_to_wanteat",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat","breakfast"],
-            "dest": "breakfast",
-            "conditions": "is_going_to_breakfast",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "lunch"],
-            "dest": "lunch",
-            "conditions": "is_going_to_lunch",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "dinner"],
-            "dest": "dinner",
-            "conditions": "is_going_to_dinner",
-        },
-        {
-            "trigger": "advance",
-            "source": ["wanteat", "midnight"],
-            "dest": "midnight",
-            "conditions": "is_going_to_midnight",
-        },
-        {
-            "trigger": "advance",
-            "source": ["breakfast", "lunch", "dinner", "midnight"],
-            "dest": "place",
-            "conditions": "is_going_to_place",
-        },
-        {
-            "trigger": "go_back", 
-            "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "place"], 
-            "dest": "user",
-        },
-    ],
-    initial="user",
-    auto_transitions=False,
-    show_conditions=True,
-)
+            "place",
+            "arrange_store",
+            "arrange_type",
+            "add_store",
+            "add_condition",
+            "add_yes",
+            "add_no",
+            "delete_store",
+            "delete_condition",
+            "search_store",
+            "search_condition"],
+        transitions=[
+            {
+                "trigger": "advance",
+                "source": "user",
+                "dest": "feature",
+                "conditions": "is_going_to_feature",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "arrange_store", "arrange_type", "add_store", "add_condition", "delete_store", "search_store"],
+                "dest": "feature",
+                "conditions": "is_going_to_feature",
+            },
+            {
+                "trigger": "advance",
+                "source": "feature",
+                "dest": "wanteat",
+                "conditions": "is_going_to_wanteat",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat","breakfast"],
+                "dest": "breakfast",
+                "conditions": "is_going_to_breakfast",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat", "lunch"],
+                "dest": "lunch",
+                "conditions": "is_going_to_lunch",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat", "dinner"],
+                "dest": "dinner",
+                "conditions": "is_going_to_dinner",
+            },
+            {
+                "trigger": "advance",
+                "source": ["wanteat", "midnight"],
+                "dest": "midnight",
+                "conditions": "is_going_to_midnight",
+            },
+            {
+                "trigger": "advance",
+                "source": ["breakfast", "lunch", "dinner", "midnight"],
+                "dest": "place",
+                "conditions": "is_going_to_place",
+            },
+            {
+                "trigger": "advance",
+                "source": "feature",
+                "dest": "arrange_store",
+                "conditions": "is_going_to_arrange_store",
+            },
+            {
+                "trigger": "advance",
+                "source": "arrange_store",
+                "dest": "arrange_type",
+                "conditions": "is_going_to_arrange_type",
+            },
+            {
+                "trigger": "advance",
+                "source": "arrange_type",
+                "dest": "add_store",
+                "conditions": "is_going_to_arrange_type",
+            },
+            {
+                "trigger": "advance",
+                "source": "arrange_type",
+                "dest": "add_store",
+                "conditions": "is_going_to_add_store",
+            },
+            {
+                "trigger": "advance",
+                "source": "add_store",
+                "dest": "add_condition",
+                "conditions": "is_going_to_add_condition",
+            },
+            {
+                "trigger": "advance",
+                "source": "add_condition",
+                "dest": "add_yes",
+                "conditions": "is_going_to_add_yes",
+            },
+            {
+                "trigger": "advance",
+                "source": "add_condition",
+                "dest": "add_no",
+                "conditions": "is_going_to_add_no",
+            },
+            {
+                "trigger": "advance",
+                "source": "arrange_type",
+                "dest": "delete_store",
+                "conditions": "is_going_to_delete_store",
+            },
+            {
+                "trigger": "advance",
+                "source": "delete_store",
+                "dest": "delete_condition",
+                "conditions": "is_going_to_delete_condition",
+            },
+            {
+                "trigger": "advance",
+                "source": "feature",
+                "dest": "search_store",
+                "conditions": "is_going_to_search_store",
+            },
+            {
+                "trigger": "advance",
+                "source": "search_store",
+                "dest": "search_condition",
+                "conditions": "is_going_to_search_condition",
+            },
+            {
+                "trigger": "go_back", 
+                "source": ["add_condition","add_yes", "add_no"], 
+                "dest": "add_store",
+            },
+            {
+                "trigger": "go_back", 
+                "source": "delete_condition", 
+                "dest": "delete_store",
+            },
+            {
+                "trigger": "go_back", 
+                "source": "search_condition", 
+                "dest": "search_store",
+            },
+            {
+                "trigger": "go_back", 
+                "source": "place", 
+                "dest": "feature",
+            },
+        ],
+        initial="user",
+        auto_transitions=False,
+        show_conditions=True,)
 
 app = Flask(__name__, static_url_path="")
 
