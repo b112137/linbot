@@ -269,7 +269,7 @@ def webhook_handler():
             },
             {
                 "trigger": "advance",
-                "source": ["wanteat", "breakfast", "lunch", "dinner", "midnight", "arrange_store", "arrange_type", "add_store", "add_condition", "delete_store", "search_store"],
+                "source": ["feature", "wanteat", "breakfast", "lunch", "dinner", "midnight", "arrange_store", "arrange_type", "add_store", "add_condition", "delete_store", "search_store"],
                 "dest": "feature",
                 "conditions": "is_going_to_feature",
             },
@@ -413,7 +413,7 @@ def webhook_handler():
         
         response = multi_user_machine[multi_user_id.index(user_id)].advance(event)
         if response == False:
-            send_text_message(event.reply_token, "Not Entering any State")
+            send_text_message(event.reply_token, "輸入錯誤！請輸入\"返回主選單\"或點擊下方選單以繼續使用！")
     
     return "OK"
 

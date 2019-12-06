@@ -18,6 +18,7 @@ client = gspread.authorize(creds)
 
 spreadsheet_key = "15X-GEDSNyUfA_5JFOkh4LjTdIBeq-rBrEdJ2GPVYGl8"
 sheet = client.open_by_key(spreadsheet_key).sheet1
+#sheet2 = client.open_by_key(spreadsheet_key)
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 channel_access_token = str(channel_access_token)
