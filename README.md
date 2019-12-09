@@ -201,6 +201,9 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 						* Reply:"郭收到你寶貴的意見囉！"(回到feature state)
 					* Input:"回到主選單"
 						* State:feature
+			* Input:"fsm"
+				* State:draw_fsm
+				* Reply:ImageSendMessage fsm image(回到feature state)
 			* Input:"回到主選單"
 				* State:feature
 ## Deploy
