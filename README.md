@@ -95,6 +95,8 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 								* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到feature state)
 							* Input:選擇按鈕 "換一家！"
 								* State:breakfast
+							* Input:"回到主選單"
+								* State:feature
 					* Input:選擇按鈕 "午餐"
 						* State:lunch
 						* Reply:店家名稱、地址、照片
@@ -104,6 +106,8 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 								* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到feature state)
 							* Input:選擇按鈕 "換一家！"
 								* State:lunch
+							* Input:"回到主選單"
+								* State:feature
 					* Input:選擇按鈕"晚餐"
 						* State:dinner
 						* Reply:店家名稱、地址、照片
@@ -113,6 +117,8 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 								* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到feature state)
 							* Input:選擇按鈕 "換一家！"
 								* State:dinner
+							* Input:"回到主選單"
+								* State:feature
 					* Input:選擇按鈕 "宵夜"
 						* State:midnight
 						* Reply:店家名稱、地址、照片
@@ -122,6 +128,8 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 								* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到feature state)
 							* Input:選擇按鈕 "換一家！"
 								* State:midnight
+							* Input:"回到主選單"
+								* State:feature
 					* Input:"回到主選單"
 						* State:feature
 			* Input:選擇按鈕 "查詢店家資訊！"
@@ -180,11 +188,13 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 										* if 店家為系統預設店家:
 											* Reply:"此店家為系統預設店家故無法刪除，請重新輸入！"(回到delete_store state)
 									* Input:"回到主選單"
-											* State:feature
+										* State:feature
 							* Input:"回到主選單"
-									* State:feature
+								* State:feature
 					* Input:"回到主選單"
 						* State:feature
+			* Input:"回到主選單"
+				* State:feature
 ## Deploy
 Setting to deploy webhooks on Heroku.
 
