@@ -84,7 +84,7 @@ class TocMachine(GraphMachine):
                     multi_user_midnight[multi_user_id.index(user_id)].append(sheet_dic[i]["midnight"])
 
         message = TemplateSendMessage(
-            alt_text='Carousel template',
+            alt_text='主選單',
             template=ImageCarouselTemplate(
                 columns=[
                     ImageCarouselColumn(
@@ -128,7 +128,7 @@ class TocMachine(GraphMachine):
         multi_user_randold[multi_user_id.index(user_id)] = [-1]
         
         message = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text='想吃什麼呢？',
             template=ButtonsTemplate(
                 thumbnail_image_url='https://upload.cc/i1/2019/12/04/1a53yH.jpg',
                 title='想吃什麼呢？',
@@ -182,7 +182,7 @@ class TocMachine(GraphMachine):
         store_address = search_address(multi_user_store_choosed[multi_user_id.index(user_id)])
         # reply_token = event.reply_token
         message = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text=multi_user_store_choosed[multi_user_id.index(user_id)],
             template=ButtonsTemplate(
                 thumbnail_image_url = store_photo,
                 title = multi_user_store_choosed[multi_user_id.index(user_id)],
@@ -228,7 +228,7 @@ class TocMachine(GraphMachine):
         store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
         store_address = search_address(multi_user_store_choosed[multi_user_id.index(user_id)])
         message = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text=multi_user_store_choosed[multi_user_id.index(user_id)],
             template=ButtonsTemplate(
                 thumbnail_image_url = store_photo,
                 title = multi_user_store_choosed[multi_user_id.index(user_id)],
@@ -273,7 +273,7 @@ class TocMachine(GraphMachine):
         store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
         store_address = search_address(multi_user_store_choosed[multi_user_id.index(user_id)])
         message = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text=multi_user_store_choosed[multi_user_id.index(user_id)],
             template=ButtonsTemplate(
                 thumbnail_image_url = store_photo,
                 title = multi_user_store_choosed[multi_user_id.index(user_id)],
@@ -318,7 +318,7 @@ class TocMachine(GraphMachine):
         store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
         store_address = search_address(multi_user_store_choosed[multi_user_id.index(user_id)])
         message = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text=multi_user_store_choosed[multi_user_id.index(user_id)],
             template=ButtonsTemplate(
                 thumbnail_image_url = store_photo,
                 title = multi_user_store_choosed[multi_user_id.index(user_id)],
@@ -363,7 +363,7 @@ class TocMachine(GraphMachine):
         print("I'm entering arrange_store")
     
         message = TemplateSendMessage(
-            alt_text='Buttons template',
+            alt_text='請選擇欲新增/刪除的店家分類',
             template=ButtonsTemplate(
                 #thumbnail_image_url = store_photo,
                 title = "請選擇欲新增/刪除的店家分類",
@@ -466,7 +466,7 @@ class TocMachine(GraphMachine):
         message = message + "\n輸入\"返回主選單\"或點擊下方選單可返回主選單"
 
         template_message = TemplateSendMessage(
-            alt_text='目錄 template',
+            alt_text='新增/刪除店家列表',
             template = ConfirmTemplate(
                 title='新增/刪除店家列表',
                 text='新增/刪除店家列表',
@@ -542,7 +542,7 @@ class TocMachine(GraphMachine):
                 self.go_back(event)
             else:
                 template_message = TemplateSendMessage(
-                    alt_text='目錄 template',
+                    alt_text="是否加入\"" + want_add_text + "\"至店家列表？",
                     template = ConfirmTemplate(
                         title= "是否加入\"" + want_add_text + "\"至店家列表？",
                         text="是否加入\"" + want_add_text + "\"至店家列表？(請確認上述店家資訊)",
