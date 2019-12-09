@@ -414,11 +414,11 @@ class TocMachine(GraphMachine):
         user_id = event.source.user_id
         message = ""
 
+        sheet_dic = sheet.get_all_records()
         if(arrange_type == 1):
             message = message + "你的早餐店家列表如下：\n"
             for i in range(0,len(multi_user_breakfast[multi_user_id.index(user_id)])):
                 global_check = 1
-                sheet_dic = sheet.get_all_records()
                 for j in range(0,len(sheet_dic)):
                     if(sheet_dic[j]["user_id"] == user_id):
                         if(sheet_dic[j]["breakfast"] == multi_user_breakfast[multi_user_id.index(user_id)][i]):
@@ -431,7 +431,6 @@ class TocMachine(GraphMachine):
             message = message + "你的午餐店家列表如下：\n"
             for i in range(0,len(multi_user_lunch[multi_user_id.index(user_id)])):
                 global_check = 1
-                sheet_dic = sheet.get_all_records()
                 for j in range(0,len(sheet_dic)):
                     if(sheet_dic[j]["user_id"] == user_id):
                         if(sheet_dic[j]["lunch"] == multi_user_lunch[multi_user_id.index(user_id)][i]):
@@ -444,7 +443,6 @@ class TocMachine(GraphMachine):
             message = message + "你的晚餐店家列表如下：\n"
             for i in range(0,len(multi_user_dinner[multi_user_id.index(user_id)])):
                 global_check = 1
-                sheet_dic = sheet.get_all_records()
                 for j in range(0,len(sheet_dic)):
                     if(sheet_dic[j]["user_id"] == user_id):
                         if(sheet_dic[j]["dinner"] == multi_user_dinner[multi_user_id.index(user_id)][i]):
@@ -457,7 +455,6 @@ class TocMachine(GraphMachine):
             message = message + "你的宵夜店家列表如下：\n"
             for i in range(0,len(multi_user_midnight[multi_user_id.index(user_id)])):
                 global_check = 1
-                sheet_dic = sheet.get_all_records()
                 for j in range(0,len(sheet_dic)):
                     if(sheet_dic[j]["user_id"] == user_id):
                         if(sheet_dic[j]["midnight"] == multi_user_midnight[multi_user_id.index(user_id)][i]):
@@ -512,7 +509,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_add_condition(self, event):
         print("I'm entering add_store")
-        
+
         user_id = event.source.user_id
         add_check = 0
 
