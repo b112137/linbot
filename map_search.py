@@ -26,13 +26,6 @@ def search_message(store_name):
         
         try:
             store_open_list = detail_results["result"]["opening_hours"]["weekday_text"]
-    #         count = 0
-    #         for open in store_open_list:
-    #             if(count == 0):
-    #                 store_open = open 
-    #             else:
-    #                 store_open = store_open + "\n　　　　　" + open
-    #             count = count + 1
             for open in store_open_list:
                 store_open = store_open + "\n" + open
         except:

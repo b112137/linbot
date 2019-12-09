@@ -4,7 +4,6 @@ from linebot import LineBotApi, WebhookParser
 from linebot.models import TemplateSendMessage, ImageCarouselTemplate, ImageCarouselColumn, MessageTemplateAction, ButtonsTemplate, ConfirmTemplate, TextSendMessage, ImageSendMessage
 
 from utils import send_text_message
-from utils import send_button_message
 
 import random
 from map_search import search_message, search_photo, search_address
@@ -45,10 +44,8 @@ class TocMachine(GraphMachine):
         self.machine = GraphMachine(model=self, **machine_configs)
 
     def is_going_to_feature(self, event):
-        global sheet2
         text = event.message.text
         print(text)
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "start" or text.lower() == "返回主選單"
 
     def on_enter_feature(self, event):
@@ -127,10 +124,8 @@ class TocMachine(GraphMachine):
         line_bot_api.push_message(user_id, message)
 
     def is_going_to_wanteat(self, event):
-        global sheet2
         text = event.message.text
         print(text)
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "想吃吃！"
 
     def on_enter_wanteat(self, event):
@@ -171,9 +166,7 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_breakfast(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "吃早餐！" or text.lower() == "換一家！"
 
     def on_enter_breakfast(self, event):
@@ -221,9 +214,7 @@ class TocMachine(GraphMachine):
         # send_text_message(reply_token, "Trigger breakfast")
 
     def is_going_to_lunch(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "吃午餐！" or text.lower() == "換一家！"
 
     def on_enter_lunch(self, event):
@@ -269,9 +260,7 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_dinner(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "吃晚餐！" or text.lower() == "換一家！"
 
     def on_enter_dinner(self, event):
@@ -317,9 +306,7 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_midnight(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "吃宵夜！" or text.lower() == "換一家！"
 
     def on_enter_midnight(self, event):
@@ -365,9 +352,7 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_place(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "獲取店家資訊！"
 
     def on_enter_place(self, event):
@@ -385,9 +370,7 @@ class TocMachine(GraphMachine):
         self.go_back(event)
     
     def is_going_to_arrange_store(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "新增/刪除店家列表"
 
     def on_enter_arrange_store(self, event):
@@ -422,9 +405,8 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_arrange_type(self, event):
-        global sheet2, arrange_type
+        global arrange_type
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         result = False
         if(text.lower() == "早餐"):
             arrange_type = 1
@@ -518,9 +500,7 @@ class TocMachine(GraphMachine):
         line_bot_api.push_message(user_id, template_message)
         
     def is_going_to_add_store(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         result = False
         if(text == "新增店家"):
             result = True
@@ -553,9 +533,8 @@ class TocMachine(GraphMachine):
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
         
     def is_going_to_add_condition(self, event):
-        global sheet2, want_add_text
+        global want_add_text
         want_add_text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), want_add_text, 0,self.state])
         result = True
         return result
 
@@ -660,9 +639,8 @@ class TocMachine(GraphMachine):
         self.go_back(event)
     
     def is_going_to_delete_store(self, event):
-        global sheet2 ,arrange_type
+        global arrange_type
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         result = False
         if(text == "刪除店家"):
             result = True
@@ -695,9 +673,8 @@ class TocMachine(GraphMachine):
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
     
     def is_going_to_delete_condition(self, event):
-        global sheet2, want_delete_text
+        global want_delete_text
         want_delete_text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), want_delete_text, 0,self.state])
         result = True
         return result
 
@@ -773,9 +750,7 @@ class TocMachine(GraphMachine):
             self.go_back(event)
 
     def is_going_to_search_store(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "查詢店家資訊！"
 
     def on_enter_search_store(self, event):
@@ -787,9 +762,8 @@ class TocMachine(GraphMachine):
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
 
     def is_going_to_search_condition(self, event):
-        global sheet2, wand_search_text
+        global wand_search_text
         wand_search_text = event.message.text
-        sheet2.append_row([event.source.user_id, get_time(), wand_search_text, 0,self.state])
         result = True
         return result
 
@@ -808,9 +782,7 @@ class TocMachine(GraphMachine):
             self.go_back(event)
 
     def is_going_to_feedback(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "意見回饋！"
 
     def on_enter_feedback(self, event):
@@ -821,10 +793,8 @@ class TocMachine(GraphMachine):
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
 
     def is_going_to_feedback_condition(self, event):
-        global sheet2, sheet3, feedback_text
+        global feedback_text
         feedback_text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
-        #sheet3.append_row([event.source.user_id, get_time(), text])
         return True
 
     def on_enter_feedback_condition(self, event):
@@ -837,9 +807,7 @@ class TocMachine(GraphMachine):
         self.go_back(event)
     
     def is_going_to_draw_fsm(self, event):
-        global sheet2
         text = event.message.text
-        #sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "fsm"
 
     def on_enter_draw_fsm(self, event):
@@ -851,11 +819,3 @@ class TocMachine(GraphMachine):
         )
         line_bot_api.push_message(user_id, message)
         self.go_back(event)
-
-# if(arrange_type == 1):
-            
-# elif(arrange_type == 2):
-            
-# elif(arrange_type == 3):
-            
-# elif(arrange_type == 4):
