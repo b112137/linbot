@@ -8,6 +8,7 @@ from utils import send_button_message
 
 import random
 from map_search import search_message, search_photo, search_address
+from get_time import get_time
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -18,7 +19,8 @@ client = gspread.authorize(creds)
 
 spreadsheet_key = "15X-GEDSNyUfA_5JFOkh4LjTdIBeq-rBrEdJ2GPVYGl8"
 sheet = client.open_by_key(spreadsheet_key).sheet1
-#sheet2 = client.open_by_key(spreadsheet_key)
+sheet2 = client.open_by_key(spreadsheet_key).get_worksheet(1)
+sheet3 = client.open_by_key(spreadsheet_key).get_worksheet(2)
 
 channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", None)
 channel_access_token = str(channel_access_token)
@@ -43,13 +45,15 @@ class TocMachine(GraphMachine):
         self.machine = GraphMachine(model=self, **machine_configs)
 
     def is_going_to_feature(self, event):
+        global sheet2
         text = event.message.text
         print(text)
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "start" or text.lower() == "返回主選單"
 
     def on_enter_feature(self, event):
         print("I'm entering feature")
-        global multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
+        global sheet2, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
         
         check_exist = 0
         user_id = event.source.user_id
@@ -107,15 +111,25 @@ class TocMachine(GraphMachine):
                             label='新增/刪除店家列表',
                             text='新增/刪除店家列表',
                         )
+                    ),
+                    ImageCarouselColumn(
+                        image_url='https://upload.cc/i1/2019/12/04/Cleb52.jpg',
+                        action=MessageTemplateAction(
+                            label='意見回饋！',
+                            text='意見回饋！',
+                        )
                     )
                 ]
             ) 
         )
+        sheet2.append_row([event.source.user_id, get_time(), 0, "回到主選單", self.state])
         line_bot_api.push_message(user_id, message)
 
     def is_going_to_wanteat(self, event):
+        global sheet2
         text = event.message.text
         print(text)
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "想吃吃！"
 
     def on_enter_wanteat(self, event):
@@ -156,12 +170,14 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_breakfast(self, event):
+        global sheet2
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "吃早餐！" or text.lower() == "換一家！"
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
-        global rand, multi_user_randold, multi_user_store_choosed
+        global sheet2, rand, multi_user_randold, multi_user_store_choosed
 
         user_id = event.source.user_id
 
@@ -181,6 +197,7 @@ class TocMachine(GraphMachine):
         store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
         store_address = search_address(multi_user_store_choosed[multi_user_id.index(user_id)])
         # reply_token = event.reply_token
+        sheet2.append_row([event.source.user_id, get_time(), 0, multi_user_store_choosed[multi_user_id.index(user_id)],self.state])
         message = TemplateSendMessage(
             alt_text=multi_user_store_choosed[multi_user_id.index(user_id)],
             template=ButtonsTemplate(
@@ -203,12 +220,14 @@ class TocMachine(GraphMachine):
         # send_text_message(reply_token, "Trigger breakfast")
 
     def is_going_to_lunch(self, event):
+        global sheet2
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "吃午餐！" or text.lower() == "換一家！"
 
     def on_enter_lunch(self, event):
         print("I'm entering lunch")
-        global rand, multi_user_randold, multi_user_store_choosed
+        global sheet2, rand, multi_user_randold, multi_user_store_choosed
         
         user_id = event.source.user_id
 
@@ -227,6 +246,7 @@ class TocMachine(GraphMachine):
         multi_user_store_choosed[multi_user_id.index(user_id)] = multi_user_lunch[multi_user_id.index(user_id)][rand]
         store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
         store_address = search_address(multi_user_store_choosed[multi_user_id.index(user_id)])
+        sheet2.append_row([event.source.user_id, get_time(), 0, multi_user_store_choosed[multi_user_id.index(user_id)],self.state])
         message = TemplateSendMessage(
             alt_text=multi_user_store_choosed[multi_user_id.index(user_id)],
             template=ButtonsTemplate(
@@ -248,12 +268,14 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_dinner(self, event):
+        global sheet2
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "吃晚餐！" or text.lower() == "換一家！"
 
     def on_enter_dinner(self, event):
         print("I'm entering dinner")
-        global rand, multi_user_randold, multi_user_store_choosed
+        global sheet2, rand, multi_user_randold, multi_user_store_choosed
         
         user_id = event.source.user_id
 
@@ -272,6 +294,7 @@ class TocMachine(GraphMachine):
         multi_user_store_choosed[multi_user_id.index(user_id)] = multi_user_dinner[multi_user_id.index(user_id)][rand]
         store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
         store_address = search_address(multi_user_store_choosed[multi_user_id.index(user_id)])
+        sheet2.append_row([event.source.user_id, get_time(), 0, multi_user_store_choosed[multi_user_id.index(user_id)],self.state])
         message = TemplateSendMessage(
             alt_text=multi_user_store_choosed[multi_user_id.index(user_id)],
             template=ButtonsTemplate(
@@ -293,12 +316,14 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_midnight(self, event):
+        global sheet2
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "吃宵夜！" or text.lower() == "換一家！"
 
     def on_enter_midnight(self, event):
         print("I'm entering midnight")
-        global rand, multi_user_randold, multi_user_store_choosed
+        global sheet2, rand, multi_user_randold, multi_user_store_choosed
         
         user_id = event.source.user_id
 
@@ -317,6 +342,7 @@ class TocMachine(GraphMachine):
         multi_user_store_choosed[multi_user_id.index(user_id)] = multi_user_midnight[multi_user_id.index(user_id)][rand]
         store_photo = search_photo(multi_user_store_choosed[multi_user_id.index(user_id)])
         store_address = search_address(multi_user_store_choosed[multi_user_id.index(user_id)])
+        sheet2.append_row([event.source.user_id, get_time(), 0, multi_user_store_choosed[multi_user_id.index(user_id)],self.state])
         message = TemplateSendMessage(
             alt_text=multi_user_store_choosed[multi_user_id.index(user_id)],
             template=ButtonsTemplate(
@@ -338,7 +364,9 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_place(self, event):
+        global sheet2
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "獲取店家資訊！"
 
     def on_enter_place(self, event):
@@ -356,7 +384,9 @@ class TocMachine(GraphMachine):
         self.go_back(event)
     
     def is_going_to_arrange_store(self, event):
+        global sheet2
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "新增/刪除店家列表"
 
     def on_enter_arrange_store(self, event):
@@ -391,8 +421,9 @@ class TocMachine(GraphMachine):
         line_bot_api.reply_message(event.reply_token, message)
 
     def is_going_to_arrange_type(self, event):
-        global arrange_type
+        global sheet2
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         result = False
         if(text.lower() == "早餐"):
             arrange_type = 1
@@ -486,8 +517,9 @@ class TocMachine(GraphMachine):
         line_bot_api.push_message(user_id, template_message)
         
     def is_going_to_add_store(self, event):
-        global arrange_type
+        global sheet2, arrange_type
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         result = False
         if(text == "新增店家"):
             result = True
@@ -495,19 +527,38 @@ class TocMachine(GraphMachine):
 
     def on_enter_add_store(self, event):
         print("I'm entering add_store")
-
+        
         user_id = event.source.user_id
+        
+        multi_user_breakfast[multi_user_id.index(user_id)] = []
+        multi_user_lunch[multi_user_id.index(user_id)] = []
+        multi_user_dinner[multi_user_id.index(user_id)] = []
+        multi_user_midnight[multi_user_id.index(user_id)] = []
+
+        sheet_dic = sheet.get_all_records()
+        for i in range(0,len(sheet_dic)):
+            if(sheet_dic[i]["user_id"] == "global" or sheet_dic[i]["user_id"] == user_id):
+                if(sheet_dic[i]["breakfast"] != 0):
+                    multi_user_breakfast[multi_user_id.index(user_id)].append(sheet_dic[i]["breakfast"])
+                if(sheet_dic[i]["lunch"] != 0):
+                    multi_user_lunch[multi_user_id.index(user_id)].append(sheet_dic[i]["lunch"])
+                if(sheet_dic[i]["dinner"] != 0):
+                    multi_user_dinner[multi_user_id.index(user_id)].append(sheet_dic[i]["dinner"])
+                if(sheet_dic[i]["midnight"] != 0):
+                    multi_user_midnight[multi_user_id.index(user_id)].append(sheet_dic[i]["midnight"])
 
         message = "請輸入店家名稱\n名稱格式：\n\"店名 區域、路名、分店名稱\"\n範例一：麥當勞 台南大學店\n範例二：路易莎 台南勝利路\n範例三：職人雙饗丼 育樂街\n\n輸入\"返回主選單\"或點擊下方選單可返回主選單"
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
         
     def is_going_to_add_condition(self, event):
-        global want_add_text
+        global sheet2, want_add_text
         want_add_text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), want_add_text, 0,self.state])
         result = True
         return result
 
     def on_enter_add_condition(self, event):
+        global sheet2
         print("I'm entering add_store")
 
         user_id = event.source.user_id
@@ -532,12 +583,14 @@ class TocMachine(GraphMachine):
 
         if(add_check == 1):
             message = "此店家已存在列表內，請重新輸入！"
+            sheet2.append_row([event.source.user_id, get_time(), 0, message, self.state])
             send_text_message(event.reply_token, message)
             self.go_back(event)
         else:
             message = search_message(want_add_text)
             if(message == "Not Found"):
                 message = "找不到此店家，請重新輸入！"
+                sheet2.append_row([event.source.user_id, get_time(), 0, message, self.state])
                 send_text_message(event.reply_token, message)
                 self.go_back(event)
             else:
@@ -569,6 +622,7 @@ class TocMachine(GraphMachine):
         return result
 
     def on_enter_add_yes(self, event):
+        global sheet2
         print("I'm entering add_yes")
         global sheet
         user_id = event.source.user_id
@@ -583,6 +637,7 @@ class TocMachine(GraphMachine):
         sheet.append_row(add_list)
 
         message = "加入完成！"
+        sheet2.append_row([event.source.user_id, get_time(), 0, message, self.state])
         send_text_message(event.reply_token, message)
         self.go_back(event)
 
@@ -594,15 +649,18 @@ class TocMachine(GraphMachine):
         return result
 
     def on_enter_add_no(self, event):
+        global sheet2
         print("I'm entering add_no")
 
         message = "加入失敗！"
+        sheet2.append_row([event.source.user_id, get_time(), 0, message, self.state])
         send_text_message(event.reply_token, message)
         self.go_back(event)
     
     def is_going_to_delete_store(self, event):
-        global arrange_type
+        global sheet2 ,arrange_type
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         result = False
         if(text == "刪除店家"):
             result = True
@@ -613,12 +671,30 @@ class TocMachine(GraphMachine):
 
         user_id = event.source.user_id
 
+        multi_user_breakfast[multi_user_id.index(user_id)] = []
+        multi_user_lunch[multi_user_id.index(user_id)] = []
+        multi_user_dinner[multi_user_id.index(user_id)] = []
+        multi_user_midnight[multi_user_id.index(user_id)] = []
+
+        sheet_dic = sheet.get_all_records()
+        for i in range(0,len(sheet_dic)):
+            if(sheet_dic[i]["user_id"] == "global" or sheet_dic[i]["user_id"] == user_id):
+                if(sheet_dic[i]["breakfast"] != 0):
+                    multi_user_breakfast[multi_user_id.index(user_id)].append(sheet_dic[i]["breakfast"])
+                if(sheet_dic[i]["lunch"] != 0):
+                    multi_user_lunch[multi_user_id.index(user_id)].append(sheet_dic[i]["lunch"])
+                if(sheet_dic[i]["dinner"] != 0):
+                    multi_user_dinner[multi_user_id.index(user_id)].append(sheet_dic[i]["dinner"])
+                if(sheet_dic[i]["midnight"] != 0):
+                    multi_user_midnight[multi_user_id.index(user_id)].append(sheet_dic[i]["midnight"])
+
         message = "請輸入完整店家名稱\n(需在以上店家列表內)\n\n輸入\"返回主選單\"或點擊下方選單可返回主選單"
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
     
     def is_going_to_delete_condition(self, event):
-        global want_delete_text
+        global sheet2, want_delete_text
         want_delete_text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), want_delete_text, 0,self.state])
         result = True
         return result
 
@@ -679,19 +755,24 @@ class TocMachine(GraphMachine):
         if(delete_check == 1):
             sheet.update_cell(delete_index, 1, "delete")
             message = "刪除完成！"
+            sheet2.append_row([event.source.user_id, get_time(), 0, message, self.state])
             send_text_message(event.reply_token, message)
             self.go_back(event)
         elif(delete_check == 0):
             message = "列表內無此店家，請重新輸入！"
+            sheet2.append_row([event.source.user_id, get_time(), 0, message, self.state])
             send_text_message(event.reply_token, message)
             self.go_back(event)
         elif(delete_check == 2):
             message = "此店家為系統預設店家故無法刪除，請重新輸入！"
+            sheet2.append_row([event.source.user_id, get_time(), 0, message, self.state])
             send_text_message(event.reply_token, message)
             self.go_back(event)
 
     def is_going_to_search_store(self, event):
+        global sheet2
         text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
         return text.lower() == "查詢店家資訊！"
 
     def on_enter_search_store(self, event):
@@ -703,21 +784,53 @@ class TocMachine(GraphMachine):
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
 
     def is_going_to_search_condition(self, event):
-        global wand_search_text
+        global sheet2, wand_search_text
         wand_search_text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), wand_search_text, 0,self.state])
         result = True
         return result
 
     def on_enter_search_condition(self, event):
+        global sheet2
         print("I'm entering delete_condition")
         message = search_message(wand_search_text)
         if(message == "Not Found"):
             message = "找不到此店家，請重新輸入！"
+            sheet2.append_row([event.source.user_id, get_time(), 0, message,self.state])
             send_text_message(event.reply_token, message)
             self.go_back(event)
         else:
+            sheet2.append_row([event.source.user_id, get_time(), 0, "result",self.state])
             send_text_message(event.reply_token, message)
             self.go_back(event)
+
+    def is_going_to_feedback(self, event):
+        global sheet2
+        text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
+        return text.lower() == "意見回饋！"
+
+    def on_enter_feedback(self, event):
+        print("I'm entering feedback")
+        user_id = event.source.user_id
+
+        message = "你有什麼意見ㄇ？\n\n輸入\"返回主選單\"或點擊下方選單可返回主選單"
+        line_bot_api.push_message(user_id, TextSendMessage(text=message))
+
+    def is_going_to_feedback_condition(self, event):
+        global sheet2, sheet3
+        text = event.message.text
+        sheet2.append_row([event.source.user_id, get_time(), text, 0,self.state])
+        sheet3.append_row([event.source.user_id, get_time(), text])
+        return True
+
+    def on_enter_feedback_condition(self, event):
+        print("I'm entering feedback_condition")
+        user_id = event.source.user_id
+
+        message = "郭收到你寶貴的意見囉！"
+        line_bot_api.push_message(user_id, TextSendMessage(text=message))
+        self.go_back(event)
 
 # if(arrange_type == 1):
             
