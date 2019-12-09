@@ -81,7 +81,7 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 * user
 	* Input:"start"
 		* State:feature
-		* Reply:三個按鈕(Carousel template) 1.想吃吃！ 2.查詢店家資訊！ 3.新增/刪除店家列表
+		* Reply:四個按鈕(Carousel template) 1.想吃吃！ 2.查詢店家資訊！ 3.新增/刪除店家列表 4.意見回饋！
 			* Input:選擇按鈕 "想吃吃！"
 				* State:wanteat
 				* Reply:想吃什麼呢？點選後將隨機推薦店家！
@@ -191,6 +191,14 @@ Every time `user` state is triggered to `advance` to another state, it will `go_
 										* State:feature
 							* Input:"回到主選單"
 								* State:feature
+					* Input:"回到主選單"
+						* State:feature
+			* Input:選擇按鈕 "意見回饋！"
+				* State:feedback
+				* Reply:"你有什麼意見ㄇ？"
+					* Input:使用者建議
+						* State:feedback_condition
+						* Reply:"郭收到你寶貴的意見囉！"(回到feature state)
 					* Input:"回到主選單"
 						* State:feature
 			* Input:"回到主選單"

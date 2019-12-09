@@ -10,12 +10,23 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from fsm import TocMachine
 from utils import send_text_message
 
+from get_time import get_time
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
 os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
 load_dotenv()
 
 multi_user_id = []
 multi_user_machine = []
+
+scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name("./auth.json", scope)
+client = gspread.authorize(creds)
+
+spreadsheet_key = "15X-GEDSNyUfA_5JFOkh4LjTdIBeq-rBrEdJ2GPVYGl8"
+sheet2 = client.open_by_key(spreadsheet_key).get_worksheet(1)
 
 machine = TocMachine(states=["user",
             "feature",
@@ -36,7 +47,8 @@ machine = TocMachine(states=["user",
             "search_store",
             "search_condition",
             "feedback",
-            "feedback_condition"],
+            "feedback_condition",
+            "draw_fsm"],
         transitions=[
             {
                 "trigger": "advance",
@@ -165,6 +177,12 @@ machine = TocMachine(states=["user",
                 "conditions": "is_going_to_feedback_condition",
             },
             {
+                "trigger": "advance",
+                "source": "feature",
+                "dest": "draw_fsm",
+                "conditions": "is_going_to_draw_fsm",
+            },
+            {
                 "trigger": "go_back", 
                 "source": ["add_condition","add_yes", "add_no"], 
                 "dest": "add_store",
@@ -181,7 +199,7 @@ machine = TocMachine(states=["user",
             },
             {
                 "trigger": "go_back", 
-                "source": ["place","feedback_condition"], 
+                "source": ["place","feedback_condition", "draw_fsm"], 
                 "dest": "feature",
             },
         ],
@@ -236,7 +254,7 @@ def callback():
 
 @app.route("/webhook", methods=["POST"])
 def webhook_handler():
-    global multi_user_id, multi_user_machine
+    global multi_user_id, multi_user_machine, sheet2
     signature = request.headers["X-Line-Signature"]
     # get request body as text
     body = request.get_data(as_text=True)
@@ -275,7 +293,8 @@ def webhook_handler():
             "search_store",
             "search_condition",
             "feedback",
-            "feedback_condition"],
+            "feedback_condition",
+            "draw_fsm"],
         transitions=[
             {
                 "trigger": "advance",
@@ -404,6 +423,12 @@ def webhook_handler():
                 "conditions": "is_going_to_feedback_condition",
             },
             {
+                "trigger": "advance",
+                "source": "feature",
+                "dest": "draw_fsm",
+                "conditions": "is_going_to_draw_fsm",
+            },
+            {
                 "trigger": "go_back", 
                 "source": ["add_condition","add_yes", "add_no"], 
                 "dest": "add_store",
@@ -420,7 +445,7 @@ def webhook_handler():
             },
             {
                 "trigger": "go_back", 
-                "source": ["place","feedback_condition"], 
+                "source": ["place","feedback_condition", "draw_fsm"], 
                 "dest": "feature",
             },
         ],
@@ -438,7 +463,8 @@ def webhook_handler():
             continue
         print(f"\nFSM STATE: {multi_user_machine[multi_user_id.index(user_id)].state}")
         print(f"REQUEST BODY: \n{body}")
-        
+        sheet2.append_row([event.source.user_id, get_time(), event.message.text, 0,multi_user_machine[multi_user_id.index(user_id)].state])
+
         response = multi_user_machine[multi_user_id.index(user_id)].advance(event)
         if response == False:
             send_text_message(event.reply_token, "輸入錯誤！請輸入\"返回主選單\"或點擊下方選單以繼續使用！")
