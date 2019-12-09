@@ -79,12 +79,112 @@ The initial state is set to `user`.
 Every time `user` state is triggered to `advance` to another state, it will `go_back` to `user` state after the bot replies corresponding message.
 
 * user
-	* Input: "go to state1"
-		* Reply: "I'm entering state1"
-
-	* Input: "go to state2"
-		* Reply: "I'm entering state2"
-
+	* Input:"start"
+		* State:feature
+		* Reply:三個按鈕(Carousel template) 1.想吃吃！ 2.查詢店家資訊！ 3.新增/刪除店家列表
+			* Input:選擇按鈕 "想吃吃！"
+				* State:wanteat
+				* Reply:想吃什麼呢？點選後將隨機推薦店家！
+				* Reply:四個按鈕(Buttons template) 1.早餐 2.午餐 3.晚餐 4.宵夜
+					* Input:選擇按鈕 "早餐"
+						* State:breakfast
+						* Reply:店家名稱、地址、照片
+						* Reply:兩個按鈕(Buttons template) 1.獲取店家資訊！ 2.換一家！
+							* Input:選擇按鈕 "獲取店家資訊！"
+								* State:place
+								* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到feature state)
+							* Input:選擇按鈕 "換一家！"
+								* State:breakfast
+					* Input:選擇按鈕 "午餐"
+						* State:lunch
+						* Reply:店家名稱、地址、照片
+						* Reply:兩個按鈕(Buttons template) 1.獲取店家資訊！ 2.換一家！
+							* Input:選擇按鈕 "獲取店家資訊！"
+								* State:place
+								* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到feature state)
+							* Input:選擇按鈕 "換一家！"
+								* State:lunch
+					* Input:選擇按鈕"晚餐"
+						* State:dinner
+						* Reply:店家名稱、地址、照片
+						* Reply:兩個按鈕(Buttons template) 1.獲取店家資訊！ 2.換一家！
+							* Input:選擇按鈕 "獲取店家資訊！"
+								* State:place
+								* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到feature state)
+							* Input:選擇按鈕 "換一家！"
+								* State:dinner
+					* Input:選擇按鈕 "宵夜"
+						* State:midnight
+						* Reply:店家名稱、地址、照片
+						* Reply:兩個按鈕(Buttons template) 1.獲取店家資訊！ 2.換一家！
+							* Input:選擇按鈕 "獲取店家資訊！"
+								* State:place
+								* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到feature state)
+							* Input:選擇按鈕 "換一家！"
+								* State:midnight
+					* Input:"回到主選單"
+						* State:feature
+			* Input:選擇按鈕 "查詢店家資訊！"
+				* State:search_store
+				* Reply:請輸入店家名稱、格式、範例
+					* Input:店家名稱
+						* State:search_condition
+						* 檢查用戶輸入的店家是否為有效店家
+						* if 店家有效:
+							* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結(回到search_store state)
+						* if 店家無效:
+							* Reply:"找不到此店家，請重新輸入！"(回到search_store state)
+					* Input:"回到主選單"
+						* State:feature
+			* Input:選擇按鈕 "新增/刪除店家列表"
+				* State:arrange_store
+				* Reply:請選擇欲新增/刪除的店家分類，點選後將顯示店家列表
+				* Reply:四個按鈕(Buttons template) 1.早餐 2.午餐 3.晚餐 4.宵夜
+					* Input:選擇按鈕 "早餐", "午餐", "晚餐", "宵夜"
+						* State:arrange_type
+						* Reply:該用戶對應的店家列表
+						* Reply:兩個按鈕(Confirm Template) 1.新增店家 2.刪除店家
+							* Input:選擇按鈕 "新增店家"
+								* State:add_store
+								* Reply:請輸入店家名稱、格式、範例
+									* Input:店家名稱
+										* State:add_condition
+										* 檢查用戶輸入的店家是否為有效店家, 或是否已經存在列表內
+										* if 店家有效:
+											* Reply:店家名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結
+											* Reply:是否加入該店家至店家列表？ 兩個按鈕(Confirm Template) 1.是 2.否
+												* Input:選擇按鈕 "是"
+													* State:add_yes
+													* Reply:"加入完成！"(回到add_store state)
+												* Input:選擇按鈕 "否"
+													* State:add_no
+													* Reply:"加入失敗！"(回到add_store state)
+												* Input:"回到主選單"
+													* State:feature
+										* if 店家無效:
+											* Reply:"找不到此店家，請重新輸入！"(回到add_store state)
+										* if 店家已存在:
+											* Reply:"此店家已存在列表內，請重新輸入！"(回到add_store state)
+									* Input:"回到主選單"
+										* State:feature
+							* Input:選擇按鈕 "刪除店家"
+								* State:delete_store
+								* Reply:請輸入店家名稱、格式、範例
+									* Input:店家名稱
+										* State:delete_condition
+										* 檢查用戶輸入的店家是否存在列表內, 或者為系統預設店家
+										* if 店家存在:
+											* Reply:"刪除完成！"(回到delete_store state)
+										* if 店家不存在:
+											* Reply:"列表內無此店家，請重新輸入！"(回到delete_store state)
+										* if 店家為系統預設店家:
+											* Reply:"此店家為系統預設店家故無法刪除，請重新輸入！"(回到delete_store state)
+									* Input:"回到主選單"
+											* State:feature
+							* Input:"回到主選單"
+									* State:feature
+					* Input:"回到主選單"
+						* State:feature
 ## Deploy
 Setting to deploy webhooks on Heroku.
 
