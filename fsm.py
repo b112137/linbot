@@ -425,7 +425,7 @@ class TocMachine(GraphMachine):
                             message = message + multi_user_breakfast[multi_user_id.index(user_id)][i] + "[自訂]\n"
                             global_check = 0
                             break
-                if(global_check == 1)
+                if(global_check == 1):
                     message = message + multi_user_breakfast[multi_user_id.index(user_id)][i] + "\n"
         elif(arrange_type == 2):
             message = message + "你的午餐店家列表如下：\n"
