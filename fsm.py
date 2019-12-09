@@ -136,7 +136,6 @@ class TocMachine(GraphMachine):
 
         multi_user_store_choosed[multi_user_id.index(user_id)] = ""
         multi_user_randold[multi_user_id.index(user_id)] = [-1]
-        
         message = TemplateSendMessage(
             alt_text='想吃什麼呢？',
             template=ButtonsTemplate(
