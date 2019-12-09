@@ -136,19 +136,19 @@ class TocMachine(GraphMachine):
                 actions=[
                     MessageTemplateAction(
                         label='早餐',
-                        text='breakfast'
+                        text='吃早餐！'
                     ),
                     MessageTemplateAction(
                         label='午餐',
-                        text='lunch'
+                        text='吃午餐！'
                     ),
                     MessageTemplateAction(
                         label='晚餐',
-                        text='dinner'
+                        text='吃晚餐！'
                     ),
                     MessageTemplateAction(
                         label='宵夜',
-                        text='midnight'
+                        text='吃宵夜！'
                     ),
                 ]
             )
@@ -157,7 +157,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_breakfast(self, event):
         text = event.message.text
-        return text.lower() == "breakfast" or text.lower() == "換一家！"
+        return text.lower() == "吃早餐！" or text.lower() == "換一家！"
 
     def on_enter_breakfast(self, event):
         print("I'm entering breakfast")
@@ -204,7 +204,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_lunch(self, event):
         text = event.message.text
-        return text.lower() == "lunch" or text.lower() == "換一家！"
+        return text.lower() == "吃午餐！" or text.lower() == "換一家！"
 
     def on_enter_lunch(self, event):
         print("I'm entering lunch")
@@ -249,7 +249,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_dinner(self, event):
         text = event.message.text
-        return text.lower() == "dinner" or text.lower() == "換一家！"
+        return text.lower() == "吃晚餐！" or text.lower() == "換一家！"
 
     def on_enter_dinner(self, event):
         print("I'm entering dinner")
@@ -294,7 +294,7 @@ class TocMachine(GraphMachine):
 
     def is_going_to_midnight(self, event):
         text = event.message.text
-        return text.lower() == "midnight" or text.lower() == "換一家！"
+        return text.lower() == "吃宵夜！" or text.lower() == "換一家！"
 
     def on_enter_midnight(self, event):
         print("I'm entering midnight")
@@ -430,16 +430,43 @@ class TocMachine(GraphMachine):
         elif(arrange_type == 2):
             message = message + "你的午餐店家列表如下：\n"
             for i in range(0,len(multi_user_lunch[multi_user_id.index(user_id)])):
-                message = message + multi_user_lunch[multi_user_id.index(user_id)][i] + "\n"
+                global_check = 1
+                sheet_dic = sheet.get_all_records()
+                for j in range(0,len(sheet_dic)):
+                    if(sheet_dic[j]["user_id"] == user_id):
+                        if(sheet_dic[j]["lunch"] == multi_user_lunch[multi_user_id.index(user_id)][i]):
+                            message = message + multi_user_lunch[multi_user_id.index(user_id)][i] + "[自訂]\n"
+                            global_check = 0
+                            break
+                if(global_check == 1):
+                    message = message + multi_user_lunch[multi_user_id.index(user_id)][i] + "\n"
         elif(arrange_type == 3):
             message = message + "你的晚餐店家列表如下：\n"
             for i in range(0,len(multi_user_dinner[multi_user_id.index(user_id)])):
-                message = message + multi_user_dinner[multi_user_id.index(user_id)][i] + "\n"
+                global_check = 1
+                sheet_dic = sheet.get_all_records()
+                for j in range(0,len(sheet_dic)):
+                    if(sheet_dic[j]["user_id"] == user_id):
+                        if(sheet_dic[j]["dinner"] == multi_user_dinner[multi_user_id.index(user_id)][i]):
+                            message = message + multi_user_dinner[multi_user_id.index(user_id)][i] + "[自訂]\n"
+                            global_check = 0
+                            break
+                if(global_check == 1):
+                    message = message + multi_user_dinner[multi_user_id.index(user_id)][i] + "\n"
         elif(arrange_type == 4):
             message = message + "你的宵夜店家列表如下：\n"
             for i in range(0,len(multi_user_midnight[multi_user_id.index(user_id)])):
-                message = message + multi_user_midnight[multi_user_id.index(user_id)][i] + "\n"
-        message = message + "\n輸入\"返回主選單\"返回主選單"
+                global_check = 1
+                sheet_dic = sheet.get_all_records()
+                for j in range(0,len(sheet_dic)):
+                    if(sheet_dic[j]["user_id"] == user_id):
+                        if(sheet_dic[j]["midnight"] == multi_user_midnight[multi_user_id.index(user_id)][i]):
+                            message = message + multi_user_midnight[multi_user_id.index(user_id)][i] + "[自訂]\n"
+                            global_check = 0
+                            break
+                if(global_check == 1):
+                    message = message + multi_user_midnight[multi_user_id.index(user_id)][i] + "\n"
+        message = message + "\n輸入\"返回主選單\"或點擊下方選單可返回主選單"
 
         template_message = TemplateSendMessage(
             alt_text='目錄 template',
