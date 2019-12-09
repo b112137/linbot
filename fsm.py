@@ -421,7 +421,7 @@ class TocMachine(GraphMachine):
                 sheet_dic = sheet.get_all_records()
                 for j in range(0,len(sheet_dic)):
                     if(sheet_dic[j]["user_id"] == user_id):
-                        if(sheet_dic[j]["breakfast"] == multi_user_breakfast[multi_user_id.index(user_id)][i):
+                        if(sheet_dic[j]["breakfast"] == multi_user_breakfast[multi_user_id.index(user_id)][i]):
                             message = message + multi_user_breakfast[multi_user_id.index(user_id)][i] + "[自訂]\n"
                             global_check = 0
                             break
