@@ -417,7 +417,16 @@ class TocMachine(GraphMachine):
         if(arrange_type == 1):
             message = message + "你的早餐店家列表如下：\n"
             for i in range(0,len(multi_user_breakfast[multi_user_id.index(user_id)])):
-                message = message + multi_user_breakfast[multi_user_id.index(user_id)][i] + "\n"
+                global_check = 1
+                sheet_dic = sheet.get_all_records()
+                for j in range(0,len(sheet_dic)):
+                    if(sheet_dic[j]["user_id"] == user_id):
+                        if(sheet_dic[j]["breakfast"] == multi_user_breakfast[multi_user_id.index(user_id)][i):
+                            message = message + multi_user_breakfast[multi_user_id.index(user_id)][i] + "[自訂]\n"
+                            global_check = 0
+                            break
+                if(global_check == 1)
+                    message = message + multi_user_breakfast[multi_user_id.index(user_id)][i] + "\n"
         elif(arrange_type == 2):
             message = message + "你的午餐店家列表如下：\n"
             for i in range(0,len(multi_user_lunch[multi_user_id.index(user_id)])):
@@ -465,7 +474,7 @@ class TocMachine(GraphMachine):
 
         user_id = event.source.user_id
 
-        message = "請輸入店家名稱\n名稱格式：\n\"店名 區域、路名、分店名稱\"\n範例一：麥當勞 台南大學店\n範例二：路易莎 台南勝利路\n範例三：職人雙饗丼 育樂\n\n輸入\"返回主選單\"返回主選單"
+        message = "請輸入店家名稱\n名稱格式：\n\"店名 區域、路名、分店名稱\"\n範例一：麥當勞 台南大學店\n範例二：路易莎 台南勝利路\n範例三：職人雙饗丼 育樂\n\n輸入\"返回主選單\"或點擊下方選單可返回主選單"
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
         
     def is_going_to_add_condition(self, event):
@@ -580,7 +589,7 @@ class TocMachine(GraphMachine):
 
         user_id = event.source.user_id
 
-        message = "請輸入完整店家名稱\n(需在以上店家列表內)\n\n輸入\"返回主選單\"返回主選單"
+        message = "請輸入完整店家名稱\n(需在以上店家列表內)\n\n輸入\"返回主選單\"或點擊下方選單可返回主選單"
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
     
     def is_going_to_delete_condition(self, event):
@@ -605,12 +614,20 @@ class TocMachine(GraphMachine):
                         delete_index = i + 2
                         delete_check = 1
                         break
+                elif(sheet_dic[i]["user_id"] == "global"):
+                    if(sheet_dic[i]["breakfast"] == want_delete_text):
+                        delete_check = 2
+                        break
         elif(arrange_type == 2):
             for i in range(0,len(sheet_dic)):
                 if(sheet_dic[i]["user_id"] == user_id):
                     if(sheet_dic[i]["lunch"] == want_delete_text):
                         delete_index = i + 2
                         delete_check = 1
+                        break
+                elif(sheet_dic[i]["user_id"] == "global"):
+                    if(sheet_dic[i]["lunch"] == want_delete_text):
+                        delete_check = 2
                         break
         elif(arrange_type == 3):
             for i in range(0,len(sheet_dic)):
@@ -619,6 +636,10 @@ class TocMachine(GraphMachine):
                         delete_index = i + 2
                         delete_check = 1
                         break
+                elif(sheet_dic[i]["user_id"] == "global"):
+                    if(sheet_dic[i]["dinner"] == want_delete_text):
+                        delete_check = 2
+                        break
         elif(arrange_type == 4):
             for i in range(0,len(sheet_dic)):
                 if(sheet_dic[i]["user_id"] == user_id):
@@ -626,14 +647,22 @@ class TocMachine(GraphMachine):
                         delete_index = i + 2
                         delete_check = 1
                         break
+                elif(sheet_dic[i]["user_id"] == "global"):
+                    if(sheet_dic[i]["midnight"] == want_delete_text):
+                        delete_check = 2
+                        break
         
         if(delete_check == 1):
             sheet.update_cell(delete_index, 1, "delete")
             message = "刪除完成！"
             send_text_message(event.reply_token, message)
             self.go_back(event)
-        else:
+        elif(delete_check == 0):
             message = "列表內無此店家，請重新輸入！"
+            send_text_message(event.reply_token, message)
+            self.go_back(event)
+        elif(delete_check == 2):
+            message = "此店家為系統預設店家故無法刪除，請重新輸入！"
             send_text_message(event.reply_token, message)
             self.go_back(event)
 
@@ -646,7 +675,7 @@ class TocMachine(GraphMachine):
 
         user_id = event.source.user_id
 
-        message = "請輸入店家名稱\n名稱格式：\n\"店名 區域、路名、分店名稱\"\n範例一：麥當勞 台南大學店\n範例二：路易莎 台南勝利路\n範例三：職人雙饗丼 育樂\n\n輸入\"返回主選單\"返回主選單"
+        message = "請輸入店家名稱\n名稱格式：\n\"店名 區域、路名、分店名稱\"\n範例一：麥當勞 台南大學店\n範例二：路易莎 台南勝利路\n範例三：職人雙饗丼 育樂\n\n輸入\"返回主選單\"或點擊下方選單可返回主選單"
         line_bot_api.push_message(user_id, TextSendMessage(text=message))
 
     def is_going_to_search_condition(self, event):
