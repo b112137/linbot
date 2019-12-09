@@ -53,7 +53,7 @@ class TocMachine(GraphMachine):
 
     def on_enter_feature(self, event):
         print("I'm entering feature")
-        global sheet2, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
+        global sheet, sheet2, multi_user_id, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight, multi_user_randold,multi_user_store_choosed
         
         check_exist = 0
         user_id = event.source.user_id
@@ -526,6 +526,7 @@ class TocMachine(GraphMachine):
         return result
 
     def on_enter_add_store(self, event):
+        global sheet, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight
         print("I'm entering add_store")
         
         user_id = event.source.user_id
@@ -667,6 +668,7 @@ class TocMachine(GraphMachine):
         return result
 
     def on_enter_delete_store(self, event):
+        global sheet, multi_user_breakfast, multi_user_lunch, multi_user_dinner, multi_user_midnight
         print("I'm entering delete_store")
 
         user_id = event.source.user_id
