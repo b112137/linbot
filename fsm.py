@@ -631,7 +631,6 @@ class TocMachine(GraphMachine):
     def on_enter_add_no(self, event):
         global sheet2
         print("I'm entering add_no")
-
         message = "加入失敗！"
         sheet2.append_row([event.source.user_id, get_time(), 0, message, self.state])
         send_text_message(event.reply_token, message)
