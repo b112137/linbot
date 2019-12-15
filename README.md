@@ -71,7 +71,7 @@ Or You can use [servo](http://serveo.net/) to expose local servers to the intern
 
 ## QRCODE
 #### 掃描以下QRCODE加入天冷吃郭！
-(./img/qrcode.png)
+![qrcode](./img/qrcode.png)
 
 ## 功能介紹
 * 想吃吃：選擇早餐/午餐/晚餐/宵夜後，會從該使用者對應的列表內隨機推薦餐廳，可選擇換一家或取得該店家資訊(名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結)
