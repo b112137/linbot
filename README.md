@@ -69,6 +69,10 @@ python3 app.py
 
 Or You can use [servo](http://serveo.net/) to expose local servers to the internet.
 
+## QRCODE
+#### 掃描以下QRCODE加入天冷吃郭！
+(./img/qrcode.png)
+
 ## 功能介紹
 * 想吃吃：選擇早餐/午餐/晚餐/宵夜後，會從該使用者對應的列表內隨機推薦餐廳，可選擇換一家或取得該店家資訊(名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結)
 * 搜尋店家資訊：輸入想搜尋的店家後，可取得該店家資訊(名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結)
