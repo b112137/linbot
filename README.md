@@ -1,4 +1,4 @@
-# TOC Project 2020
+# 天冷吃郭！ TOC Project 2020
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/dc7fa47fcd809b99d087/maintainability)](https://codeclimate.com/github/NCKU-CCS/TOC-Project-2020/maintainability)
 
@@ -69,6 +69,12 @@ python3 app.py
 
 Or You can use [servo](http://serveo.net/) to expose local servers to the internet.
 
+## 功能介紹
+* 想吃吃：選擇早餐/午餐/晚餐/宵夜後，會從該使用者對應的列表內隨機推薦餐廳，可選擇換一家或取得該店家資訊(名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結)
+* 搜尋店家資訊：輸入想搜尋的店家後，可取得該店家資訊(名稱、地址、電話、營業時間、價位等級、評價等級、GoogleMap連結)
+* 新增/刪除店家列表：選擇早餐/午餐/晚餐/宵夜列表後，會列出該列表內的店家，並可新增或刪除該列表內容(不同用戶擁有其專屬列表)
+* 意見回饋：可回饋使用意見給開發者
+* 取得fsm圖片：輸入fsm可取得fsm圖片
 
 ## Finite State Machine
 ![fsm](./img/show-fsm.png)
